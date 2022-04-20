@@ -9,6 +9,7 @@ public class Booking {
     int day;
 
     Doctor[] doctors;
+    int arrayLength = 0; 
 
     int roomNum;
     
