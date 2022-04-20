@@ -524,10 +524,10 @@ public class RoomScheduling {
 				if (room[bookingIndex].roomNum == 1) {
 					times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
 				}
-				if (room[bookingIndex].roomNum == 1) {
+				if (room[bookingIndex].roomNum == 2) {
 					times = checkTimesAssigned(Room1, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
 				}
-				if (room[bookingIndex].roomNum == 2) {
+				if (room[bookingIndex].roomNum == 3) {
 					times = checkTimesAssigned(Room2, Room1, room[bookingIndex], allDoctors[allDocIndex].name);
 				}
 
@@ -549,22 +549,22 @@ public class RoomScheduling {
 		else { // type == consultant
 
 			if (room[bookingIndex].shift == 2) {
-			return false;
-			} else {
-			// const 2
-			if (room[bookingIndex].roomNum == 1) {
-				times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
-			}
-			if (room[bookingIndex].roomNum == 1) {
-				times = checkTimesAssigned(Room1, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
-			}
-			if (room[bookingIndex].roomNum == 2) {
-				times = checkTimesAssigned(Room2, Room1, room[bookingIndex], allDoctors[allDocIndex].name);
-			}
-
-			if (times != 1) {
 				return false;
-			}
+			} else {
+				// const 2
+				if (room[bookingIndex].roomNum == 1) {
+					times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 2) {
+					times = checkTimesAssigned(Room1, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 3) {
+					times = checkTimesAssigned(Room2, Room1, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+
+				if (times != 1) {
+					return false;
+				}
 
 //			if (room[i].shift == 2) {
 //				return false;
@@ -612,10 +612,8 @@ public class RoomScheduling {
 		}
 
 		return times;
-		
-	} //--checkTimesAssigned end--//
-	
-	
+
+	} // --checkTimesAssigned end--//
 
 	public static boolean validBasedOnSpecialNeed(Booking[] room, int bookingIndex, int allDocIndex) {
 
