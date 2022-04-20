@@ -103,15 +103,15 @@ public class RoomScheduling {
 		setTheRooms();
 
 //		backtrack();
-		if(backtracking(allRooms)) {
+		if (backtracking(allRooms)) {
 
-		printRoomSchedule(Room1);
-		printRoomSchedule(Room2);
-		printRoomSchedule(Room3);
+			printRoomSchedule(Room1);
+			printRoomSchedule(Room2);
+			printRoomSchedule(Room3);
 		}
 
 	}
-	
+
 	////////////// backtracking method vvvvvvvvvv rawan
 
 	public static boolean backtracking(Booking[][] rooms) {
@@ -120,22 +120,29 @@ public class RoomScheduling {
 				for (int h = 0; h < allDoctors.length; h++) {
 					if (checkRoomAvailability(rooms[i][j], allDoctors[h].type)) {
 						if (checkAssignmentValidity(rooms[i], j, h)) {
+							if (!allDoctors[h].assigned) {
 //							System.out.println("here11111111111");
-							allDoctors[h].assigned = true;
-							if(rooms[i][j].arrayLength == 0) {
-								rooms[i][j].doctors[0] = allDoctors[h];
-							}
-							else rooms[i][j].doctors[rooms[i][j].doctors.length - 1] = allDoctors[h];
-							rooms[i][j].arrayLength++; 
-							System.out.println("doctor assigned in room"+ (i+1));
+								allDoctors[h].assigned = true;
+								if (rooms[i][j].arrayLength == 0) {
+									rooms[i][j].doctors[0] = allDoctors[h];
+								} else
+									rooms[i][j].doctors[rooms[i][j].doctors.length - 1] = allDoctors[h];
+								rooms[i][j].arrayLength++;
+								System.out.println("doctor assigned in room" + (i + 1));
 
-							if (backtracking(rooms)) {
-								return true;
-							} else {
-								rooms[i][j].arrayLength--; 
-								System.out.println("doc removed from room" + (i+1));
-								allDoctors[h].assigned = false;
-								rooms[i][j].doctors[rooms[i][j].arrayLength] = null;
+								if (backtracking(rooms)) {
+									return true;
+								} else {
+									System.out.println("doc removed from room" + (i + 1));
+									allDoctors[h].assigned = false;
+									if (rooms[i][j].arrayLength <= 1) {
+										rooms[i][j].doctors[rooms[i][j].arrayLength] = null;
+										rooms[i][j].arrayLength--;
+									} else {
+										rooms[i][j].arrayLength--;
+										rooms[i][j].doctors[rooms[i][j].arrayLength - 1] = null;
+									}
+								}
 							}
 						}
 					}
@@ -150,7 +157,11 @@ public class RoomScheduling {
 	public static boolean checkRoomAvailability(Booking room, String type) {
 //		System.out.println("here22222222222");
 //		boolean available = false;
-		
+
+		if (room.arrayLength >= 10) {
+			return false;
+		}
+
 		if (room.arrayLength == 0) {
 //			System.out.println("stuckkkkkk1111");
 			return true;
@@ -171,9 +182,8 @@ public class RoomScheduling {
 		return false;
 	}
 
-	/////////////////////// ^^^^^^^ rawan 
-	
-	
+	/////////////////////// ^^^^^^^ rawan
+
 	public static void backtrack() {
 
 		// Check if all the doctors are assigned
@@ -625,7 +635,7 @@ public class RoomScheduling {
 			if (times != 1) {
 				return false;
 			}
-			
+
 		}
 
 		else { // type == consultant
@@ -660,9 +670,8 @@ public class RoomScheduling {
 
 	}// end func
 
-	
-	////////////////// for const 2 vvvvvvvvvvvvvvv rawan 
-	
+	////////////////// for const 2 vvvvvvvvvvvvvvv rawan
+
 	public static int checkTimesAssigned(Booking[] roomX, Booking[] roomY, Booking booking, String name) {
 
 		int times = 1;
@@ -699,9 +708,8 @@ public class RoomScheduling {
 		return times;
 
 	} // --checkTimesAssigned end--//
-	
-	////////////////// ^^^^^^^^^^^^^^^^^^^^^^^^^ rawan 
 
+	////////////////// ^^^^^^^^^^^^^^^^^^^^^^^^^ rawan
 
 	public static boolean validBasedOnSpecialNeed(Booking[] room, int bookingIndex, int allDocIndex) {
 
