@@ -1,3 +1,5 @@
+package RoomScheduling;
+
 public class Booking {
 
     // We have assumed 1 for morning shift and 2 for afternoon shift

@@ -1,3 +1,5 @@
+package RoomScheduling;
+
 public class Doctor {
 
     String name;

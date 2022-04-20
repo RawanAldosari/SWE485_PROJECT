@@ -1,3 +1,5 @@
+package RoomScheduling;
+
 public class Constraints {
 
     //INFORMATION
@@ -62,7 +64,13 @@ public class Constraints {
      public static boolean checkConstraintsSatisfaction(Booking[] room){
 
         boolean satisfiesConstraints = false;
+        
+        Booking[] room1 = RoomScheduling.Room1; 
+        Booking[] room2 = RoomScheduling.Room2; 
+        Booking[] room3 = RoomScheduling.Room3; 
 
+        Booking[][] rooms = {room1, room2, room3}; 
+        
         //We check if it satisfies all the constraints
 
 
@@ -76,7 +84,7 @@ public class Constraints {
 
 
             //We check all the doctors of the room
-            for(j=0; j<room[i].doctors.length; j++){
+            for(int j=0; j<room[i].doctors.length; j++){
                 
                 if(room[i].doctors[j].type.toLowerCase().equals("consultant") && room[i].shift==2){
                     satisfiesConstraints = false;
@@ -88,7 +96,35 @@ public class Constraints {
 
          //Constraint #2 
          //We check it in another method since it requires checking all the rooms
+        
+ 		
+ 		for (int i = 0; i < rooms.length; i++) {
+ 			System.out.println("here ----------222"); 
 
+ 			int times = 0; 
+ 			
+ 			for(int j=0 ; j < rooms[i].length ; j++ ) {
+ 				for (int h = 0; h < rooms[i][j].doctors.length; h++) {
+ 					if(i==0) {
+ 						times = checkTimesAssigned(room2, room3, rooms[i][j],
+ 								rooms[i][j].doctors[h].name); 
+ 					}
+ 					if(i==1) {
+ 						times = checkTimesAssigned(room1, room3, rooms[i][j], 
+ 								rooms[i][j].doctors[h].name); 
+ 					}
+ 					if(i==2) {
+ 						times = checkTimesAssigned(room1, room2, rooms[i][j], 
+ 								rooms[i][j].doctors[h].name); 
+ 					}
+ 					
+ 					if(times != 1) {
+ 						satisfiesConstraints = false;
+ 					}
+ 				}
+ 			}
+ 				
+ 		}
          
 
 
@@ -100,13 +136,13 @@ public class Constraints {
          for (int i =0; i<room.length; i++){
             
             //We check all the doctors of the room
-            for(j=0; j<room[i].doctors.length; j++){
+            for(int j=0; j<room[i].doctors.length; j++){
                 
             //We check all the doctors of the room we must have a junior+senior in the same booking
             if(room[i].doctors[j].type.toLowerCase().equals("junior")){
 
                 //We check if there is a senior in the same booking
-                 for(y=0; y<room[i].doctors.length; y++){
+                 for(int y=0; y<room[i].doctors.length; y++){
 
                     boolean thereIsASenior = false;
 
@@ -144,7 +180,7 @@ public class Constraints {
          for (int i =0; i<room.length; i++){
             
             //We check all the doctors of the room
-            for(j=0; j<room[i].doctors.length; j++){
+            for(int j=0; j<room[i].doctors.length; j++){
                 
             //We check all the doctors of the room we must have a junior+senior in the same booking
             if(room[i].doctors[j].type.toLowerCase().equals("junior") && room[i].roomNum==3){
@@ -203,26 +239,47 @@ public class Constraints {
          }
 
 
-
-
-
-
-
-
-     
-
-
-
-
-
-
-
-
-
         return satisfiesConstraints;
 
 
     }
+
+     public static int checkTimesAssigned(Booking[] roomX, Booking[] roomY, Booking booking, String name) {
+
+			int times = 1;
+			System.out.println("here ----------111"); 
+
+
+			for (int i = 0; i < roomX.length; i++) {
+
+				if ((roomX[i].day == booking.day) && (roomX[i].shift == booking.shift)) {
+					for (int j = 0; j < roomX[i].doctors.length; j++) {
+						System.out.println("here:"  + roomX[i].doctors[j].name + " og: " + name); 
+						if (roomX[i].doctors[j].name.equals(name)) {
+							System.out.println("found duplicate"); 
+							times++; 
+						}
+					}
+				}
+
+			}
+
+			for (int i = 0; i < roomY.length; i++) {
+
+				if ((roomY[i].day == booking.day) && (roomY[i].shift == booking.shift)) {
+					for (int j = 0; j < roomY[i].doctors.length; j++) {
+						System.out.println("here:"  + roomY[i].doctors[j].name + " og: " + name); 
+						if (roomY[i].doctors[j].name.equals(name)) {
+							System.out.println("found duplicate"); 
+							times++; 
+						}
+					}
+				}
+
+			}
+			
+			return times;
+		}
 
     
 }
