@@ -653,8 +653,18 @@ public class RoomScheduling {
 		}
 
 		// check special need
-		// check const( 3 and 4 and 5) + const 2
-		else if (allDoctors[allDocIndex].type.equals("junior")) {
+	// check const( 3 and 4 and 5) + const 2
+	// ٣ و ٤ يشيك عليهم قبل ما يجي لهذي الميثود، لما ما يسوي اساينمنت للجونيور لما يتأكد انه السينيور مسوي له اساينمنت
+	else if (allDoctors[allDocIndex].type.equals("junior")) {
+		
+	/*	boolean validBasedOnSpecialNeed = checkBasedOntype(room,bookingIndex,allDocIndex);
+		if(!validBasedOnSpecialNeed)
+			return false;
+		
+		// const 5
+		if (room[bookingIndex].roomNum == 3)
+			return false;
+*/
 
 			if (room[bookingIndex].roomNum == 1) {
 				times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
