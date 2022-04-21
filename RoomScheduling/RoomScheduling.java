@@ -421,160 +421,194 @@ public class RoomScheduling {
 	/////////////////////////////////// ////////////////////////////////////////////
 
 	public static void assignment(Booking[] Room) {
-		// what if the room bookings are all full and it kept looping?
-		// meaning there is no empty spot, but the for loop kept going for all doctors
+	// what if the room bookings are all full and it kept looping? (use checkRoomAvailability())
+	// meaning there is no empty spot, but the for loop kept going for all doctors
+	
+	// we want to assign seniors at doctors[0] and juniors at doctors[1]
+	
+	
+	assignSeniors(Room);
+	assignConsultants(Room);
+	assignJuniors(Room);
+	
+	// create method to fill the empty spots in a room by an already assigned doctor , there will be a 6 empty senior spots
+	// since seniors = 18 and consultants = 6 
+	 
+	 
+	  
+	
+	
+} // end func 
 
-		// we want to assign seniors at doctors[0] and juniors at doctors[1]
 
-		assignSeniors(Room);
-		assignConsultants(Room);
-		assignJuniors(Room);
+	public static void assignConsultants(Booking [] Room) {
 
-	} // end func
+	
+	
+	
+	 for (int i=0; i<allDoctors.length; i++){
+		 
+         if (allDoctors[i].type.toLowerCase().equals("consultant")){
+             System.out.println("found a consultant doctor");
+             
+             // loop throug the room to find unfull booking and assign senior to it 
+             
+             for (int j=0; j< Room.length; j++) {
+            	 
+            	 if (!checkRoomAvailability(Room, allDoctors[i].type))
+            		 return ;
+             if ( Room[j].doctors[0] != null ){// should we place the consultant at Room[j].doctors[0]? 
+            	 // كأنه بيسوي عملية لحاله ومعه جونيور
+        	   // go to next 
+        	   System.out.println("spot is already taken");
+        	   continue;
+           }
 
-	public static void assignConsultants(Booking[] Room) {
+            	 Room[j].doctors[0]= allDoctors[i];
+            	 Room[j].surgeryType = allDoctors[i].specialNeed;
+ 
+            	 allDoctors[i].assigned = true;
+             
+             boolean isValid = checkAssignmentValidity(Room,j,i);
+             
+             if (!isValid) { // change assignment, and go to other booking in Room
+            	 Room[j].doctors[0]= null;
+            	 Room[j].surgeryType = null;
+            	 allDoctors[i].assigned = false;
+             }
+            
+             }
+             
 
-		// the problem is maybe all Room[j].doctors[0] places are taken by seniors
+         }
+	 }
+	 
+	 	
+	
+}
 
-		for (int i = 0; i < allDoctors.length; i++) {
 
-			if (allDoctors[i].type.toLowerCase().equals("consultant")) {
-				System.out.println("found a consultant doctor");
 
-				// loop through the room to find free booking and assign senior to it
+	public static void assignSeniors(Booking [] Room) {
+	//بيكون عندي ٦ اماكن سينيورز فاضية لازم اعبيها من الاسايند
+	// Seniors
+		 for (int i=0; i<allDoctors.length; i++){
+			 
+	         if (allDoctors[i].type.toLowerCase().equals("senior")){
+	             System.out.println("found a senior doctor");
+	             
+	             
+	             if (allDoctors[i].assigned == false ) { 
+	            	// loop throug the room to find unfull booking and assign senior to it 
+	            	 
+	             for (int j=0; j< Room.length; j++) {
+	           
+	            	 if (!checkRoomAvailability(Room, allDoctors[i].type))
+	            		 return ;
+	            	 
+	             if ( Room[j].doctors[0] != null ){
+	        	   // go to next 
+	        	   System.out.println("spot is already taken");
+	        	   continue;
+	           }
+	            
+	            	 Room[j].doctors[0]= allDoctors[i];
+	            	 Room[j].surgeryType = allDoctors[i].specialNeed;
+	            
+	            	 allDoctors[i].assigned = true;
+	             
+	             boolean isValid = checkAssignmentValidity(Room,j,i);
+	             
+	             if (!isValid) { // change assignment, and go to other booking in Room
+	            	 Room[j].doctors[0]= null;
+	            	 Room[j].surgeryType = null;
+	            	 allDoctors[i].assigned = false;
+	             }
+	            
+	             }
+	             
+	         }
+	             
 
-				for (int j = 0; j < Room.length; j++) {
+	         }
+		 }
+		 
+	
+}
 
-					if (Room[j].doctors[0] != null) {
-						// go to next
-						System.out.println("spot is already taken");
-						continue;
-					}
 
-					Room[j].doctors[0] = allDoctors[i];
-					Room[j].surgeryType = allDoctors[i].specialNeed;
 
-					allDoctors[i].assigned = true;
+	public static void assignJuniors(Booking [] Room) {
+	
+	// not all doctors have special needs, a junior doctor with a special need should be assigned with a senior that doesn't have a special need
+		 // Juniors
+		 for (int i=0; i<allDoctors.length; i++){
+			 
+	         if (allDoctors[i].type.toLowerCase().equals("junior")){
+	             System.out.println("found a junior doctor");
+	             
+	             // loop throug the room to find unfull booking and assign senior to it 
+	             
+	             for (int j=0; j< Room.length; j++) {
+	            	
+	            	 if (!checkRoomAvailability(Room, allDoctors[i].type)) // room is full
+	            		 return ;
+	            	 
+	             if ( Room[j].doctors[1] != null ){
+	        	   // go to next 
+	        	   System.out.println("spot is already taken");
+	        	   continue;
+	           }
+	             
+	             // junior has a special need 
+	             if (allDoctors[i].specialNeed.equals("brain") || allDoctors[i].specialNeed.equals("x-ray") || allDoctors[i].specialNeed.equals("streaming")){
+	             // assign special juniors to none seniors, or to seniors with the same special need
+	             if ( Room[j].doctors[0].specialNeed.equals("none") ||  Room[j].doctors[0].specialNeed.equals(allDoctors[i].specialNeed)) {
+	             
+	            	 Room[j].doctors[1]= allDoctors[i];
+	            	 Room[j].surgeryType = allDoctors[i].specialNeed;
+	            
+	            	 allDoctors[i].assigned = true;
+	             
+	             boolean isValid = checkAssignmentValidity(Room,j,i);
+	             
+	             if (!isValid) { // change assignment, and go to other booking in Room
+	            	 Room[j].doctors[1]= null;
+	            	 Room[j].surgeryType = null;
+	            	 allDoctors[i].assigned = false;
+	             }
+	             
+	             }
+	             
+	             }
+	             
+	             // junior doesn't have a special need , so it can be assigned with any senior (none)
+	             else {
+	            	 Room[j].doctors[1]= allDoctors[i];
+	            	 // I commented the line below bc it will take the senior special need 
+	            	// Room[j].surgeryType = allDoctors[i].specialNeed;
+	            
+	            	 allDoctors[i].assigned = true;
+	             
+	             boolean isValid = checkAssignmentValidity(Room,j,i);
+	             
+	             if (!isValid) { // change assignment, and go to other booking in Room
+	            	 Room[j].doctors[1]= null;
+	            	 Room[j].surgeryType = null;
+	            	 allDoctors[i].assigned = false;
+	             }
+	             }
+	             
+	             
+	             
+	            
+	             }
+	             
 
-					boolean isValid = checkAssignmentValidity(Room, j, i);
-
-					if (!isValid) { // change assignment, and go to other booking in Room
-						Room[j].doctors[0] = null;
-						Room[j].surgeryType = null;
-						allDoctors[i].assigned = false;
-					}
-
-				}
-
-			}
-		}
-
-	}
-
-	public static void assignSeniors(Booking[] Room) {
-
-		// Seniors
-		for (int i = 0; i < allDoctors.length; i++) {
-
-			if (allDoctors[i].type.toLowerCase().equals("senior")) {
-				System.out.println("found a senior doctor");
-
-				if (allDoctors[i].assigned == false) {
-					// loop through the room to find free booking and assign senior to it
-					for (int j = 0; j < Room.length; j++) {
-
-						if (Room[j].doctors[0] != null) {
-							// go to next
-							System.out.println("spot is already taken");
-							continue;
-						}
-
-						Room[j].doctors[0] = allDoctors[i];
-						Room[j].surgeryType = allDoctors[i].specialNeed;
-
-						allDoctors[i].assigned = true;
-
-						boolean isValid = checkAssignmentValidity(Room, j, i);
-
-						if (!isValid) { // change assignment, and go to other booking in Room
-							Room[j].doctors[0] = null;
-							Room[j].surgeryType = null;
-							allDoctors[i].assigned = false;
-						}
-
-					}
-
-				}
-
-			}
-		}
-
-	}
-
-// NOT complete
-	public static void assignJuniors(Booking[] Room) {
-
-		// not all doctors have special needs, a junior doctor with a special need
-		// should be assigned with a senior that doesn't have a special need
-		// Juniors
-		for (int i = 0; i < allDoctors.length; i++) {
-
-			if (allDoctors[i].type.toLowerCase().equals("junior")) {
-				System.out.println("found a junior doctor");
-
-				// loop through the room to find free booking and assign senior to it
-
-				for (int j = 0; j < Room.length; j++) {
-
-					if (Room[j].doctors[1] != null) {
-						// go to next
-						System.out.println("spot is already taken");
-						continue;
-					}
-					// assign special juniors to none seniors
-					if (Room[j].doctors[0].specialNeed.equals("none")) {
-
-						Room[j].doctors[1] = allDoctors[i];
-						Room[j].surgeryType = allDoctors[i].specialNeed;
-
-						allDoctors[i].assigned = true;
-
-						boolean isValid = checkAssignmentValidity(Room, j, i);
-
-						if (!isValid) { // change assignment, and go to other booking in Room
-							Room[j].doctors[1] = null;
-							Room[j].surgeryType = null;
-							allDoctors[i].assigned = false;
-						}
-
-					}
-
-					// if senior is special assign to it a junior with the same special need
-					/*
-					 * if ( Room[j].doctors[0].specialNeed.equals("brain") &&
-					 * allDoctors[i].specialNeed.equals("none") ) {
-					 * 
-					 * 
-					 * Room[j].doctors[1]= allDoctors[i]; Room[j].surgeryType =
-					 * allDoctors[i].specialNeed;
-					 * 
-					 * allDoctors[i].assigned = true;
-					 * 
-					 * boolean isValid = checkAssignmentValidity(Room,j,i);
-					 * 
-					 * if (!isValid) { // change assignment, and go to other booking in Room
-					 * Room[j].doctors[1]= null; Room[j].surgeryType = null; allDoctors[i].assigned
-					 * = false; }
-					 * 
-					 * }
-					 */
-
-				}
-
-			}
-		}
-
-	}
+	         }
+		 }
+		 
+}
 
 // check const( 6 or 7 or 8 )
 // check const( 3 and 4 and 5) for juniors
