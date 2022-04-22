@@ -141,7 +141,7 @@ public class RoomScheduling {
 //		while(!checkAssignmetOfDoctors2()) {
 
 			if (!Constraints.isValid(row, col, allDoctors[i])) {
-				System.out.println("doctor amoved ob");
+//				System.out.println("doctor amoved ob");
 				continue;
 			}
 			allDoctors[i].assigned = true;
