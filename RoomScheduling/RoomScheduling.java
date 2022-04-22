@@ -17,7 +17,7 @@ public class RoomScheduling {
 
 //	static ArrayList<Booking> combinedRooms = new ArrayList<Booking>(30);
 	static Booking[][] combinedRooms = new Booking[6][5];
-	
+
 	static Booking[][] allRooms = { Room1, Room2, Room3 };
 
 	static Doctor[] allDoctors = new Doctor[30];
@@ -104,20 +104,51 @@ public class RoomScheduling {
 			}
 		}
 
-		setTheRooms();
-		
-		
-		setTheRooms2(); 
-		
-		if(solve(combinedRooms)) {
+//		setTheRooms();
+
+//		setTheRooms2(); 
+
+		combinedRooms[0][0] = new Booking(1, 1, 1);
+		combinedRooms[3][0] = new Booking(2, 1, 1);
+		combinedRooms[0][1] = new Booking(1, 2, 1);
+		combinedRooms[3][1] = new Booking(2, 2, 1);
+		combinedRooms[0][2] = new Booking(1, 3, 1);
+		combinedRooms[3][2] = new Booking(2, 3, 1);
+		combinedRooms[0][3] = new Booking(1, 4, 1);
+		combinedRooms[3][3] = new Booking(2, 4, 1);
+		combinedRooms[0][4] = new Booking(1, 5, 1);
+		combinedRooms[0][4] = new Booking(2, 5, 1);
+
+		combinedRooms[1][0] = new Booking(1, 1, 2);
+		combinedRooms[4][0] = new Booking(2, 1, 2);
+		combinedRooms[1][1] = new Booking(1, 2, 2);
+		combinedRooms[4][1] = new Booking(2, 2, 2);
+		combinedRooms[1][2] = new Booking(1, 3, 2);
+		combinedRooms[4][2] = new Booking(2, 3, 2);
+		combinedRooms[1][3] = new Booking(1, 4, 2);
+		combinedRooms[4][3] = new Booking(2, 4, 2);
+		combinedRooms[1][4] = new Booking(1, 5, 2);
+		combinedRooms[4][4] = new Booking(2, 5, 2);
+
+		combinedRooms[2][0] = new Booking(1, 1, 3);
+		combinedRooms[5][0] = new Booking(2, 1, 3);
+		combinedRooms[2][1] = new Booking(1, 2, 3);
+		combinedRooms[5][1] = new Booking(2, 2, 3);
+		combinedRooms[2][2] = new Booking(1, 3, 3);
+		combinedRooms[5][2] = new Booking(2, 3, 3);
+		combinedRooms[2][3] = new Booking(1, 4, 3);
+		combinedRooms[5][3] = new Booking(2, 4, 3);
+		combinedRooms[2][4] = new Booking(1, 5, 3);
+		combinedRooms[5][4] = new Booking(2, 5, 3);
+
+		if (solve(combinedRooms)) {
 			System.out.println("success");
-			printRoomsSchedule(1); 
-			printRoomsSchedule(2); 
-			printRoomsSchedule(3); 
-		} else 
+			printRoomsSchedule(1);
+			printRoomsSchedule(2);
+			printRoomsSchedule(3);
+		} else
 			System.out.println("fail");
-			
-		
+
 //		backtracking(allRooms); 
 //		printRoomSchedule(Room1);
 //		printRoomSchedule(Room2);
@@ -136,44 +167,39 @@ public class RoomScheduling {
 	}
 
 	public static boolean solve(Booking[][] combinedRooms) {
-		return helper(0,0); 
+		return helper(0, 0);
 	}
-	
+
 	public static boolean helper(int row, int col) {
-		
-		if(col == 5) {
-			row += 1; 
-			col = 0; 
+
+		if (col == 5) {
+			row += 1;
+			col = 0;
 		}
-		
-		if(row == 6) return true; 
-		
-//		if(!combinedRooms[row][col].doctors.isEmpty()) {
-//			if()
-//		}
-		
-		for(int i = 0 ; i < allDoctors.length ; i++) {
-//			if(!checkRoomAvailability(combinedRooms[row][col],allDoctors[i].type )) {
-//				continue; 
-//			} 
-		if(!Constraints.isValid(row, col, allDoctors[i])) {
-				continue; 
-			}			
-			allDoctors[i].assigned = true; 
+
+		if (row == 6)
+			return true;
+
+		for (int i = 0; i < allDoctors.length; i++) {
+
+			if (!Constraints.isValid(row, col, allDoctors[i])) {
+				continue;
+			}
+			allDoctors[i].assigned = true;
 			System.out.println("doctor assigned in room" + row);
-			combinedRooms[row][col].doctors.add(allDoctors[i]); 
-			if(helper(row, col + 1) == true) {
-				return true; 
+			combinedRooms[row][col].doctors.add(allDoctors[i]);
+			if (helper(row, col + 1) == true) {
+				return true;
 			} else {
 				System.out.println("doctor removed from room" + row);
-				allDoctors[i].assigned = false; 
-				combinedRooms[row][col].doctors.remove(allDoctors[i]); 
+				allDoctors[i].assigned = false;
+				combinedRooms[row][col].doctors.remove(allDoctors[i]);
 			}
-			
+
 		}
-		return false; 
+		return false;
 	}
-	
+
 //	public static void solve(int n, int row, Booking booking, ArrayList<Booking> result) {
 //		if(row == 0) {
 ////			combinedRooms.
@@ -190,7 +216,7 @@ public class RoomScheduling {
 //		}
 //		
 //	}
-	
+
 	////////////// backtracking method vvvvvvvvvv rawan
 
 	public static boolean backtracking(Booking[][] rooms) {
@@ -211,15 +237,14 @@ public class RoomScheduling {
 								System.out.println("doctor removed from room" + (i + 1));
 							}
 //							}
-						} 
-					} 
+						}
+					}
 				}
 				return false;
 			}
 		}
 		return true;
 	}
-
 
 	public static boolean checkRoomAvailability(Booking room, String type) {
 
@@ -234,8 +259,8 @@ public class RoomScheduling {
 		if (type.equals("senior")) {
 			if (room.doctors.get(0).type.equals("junior") && (room.doctors.size() == 1)) {
 				return true;
-			}
-			else return false; 
+			} else
+				return false;
 		}
 
 		if (room.doctors.get(0).type.equals("senior") && (room.doctors.size() == 1)) {
@@ -429,11 +454,11 @@ public class RoomScheduling {
 	}
 
 	public static void printRoomsSchedule(int roomNum) {
-		
+
 		System.out.println("Room " + roomNum + " Schedule");
 		for (int i = 0; i < combinedRooms.length; i++) {
 			for (int j = 0; j < combinedRooms[i].length; j++) {
-				if(combinedRooms[i][j].roomNum == roomNum) {
+				if (combinedRooms[i][j].roomNum == roomNum) {
 					System.out.println("day " + combinedRooms[i][j].day);
 					System.out.println("Shift " + combinedRooms[i][j].shift);
 					System.out.println("Surgery type " + combinedRooms[i][j].surgeryType);
@@ -444,7 +469,7 @@ public class RoomScheduling {
 		}
 
 	}
-	
+
 	public static void printDoctors(ArrayList<Doctor> docs) {
 
 		for (int i = 0; i < docs.size(); i++) {
@@ -473,12 +498,12 @@ public class RoomScheduling {
 		return isAllDoctorsAssigned;
 
 	}
-	
+
 	public static boolean checkAssignmetOfDoctors2() {
 
 		for (int i = 0; i < allDoctors.length; i++) {
-			if(! allDoctors[i].assigned)
-				return false; 
+			if (!allDoctors[i].assigned)
+				return false;
 		}
 
 		return true;
@@ -558,8 +583,7 @@ public class RoomScheduling {
 		combinedRooms[5][4] = new Booking(2, 5, 3);
 
 	}
-	
-	
+
 	/////////////////////////////////// BY MODHI
 	/////////////////////////////////// ////////////////////////////////////////////
 
@@ -799,7 +823,7 @@ public class RoomScheduling {
 
 			} else
 				System.out.println("failed33333");
-				return false;
+			return false;
 		}
 
 		// check special need
@@ -861,7 +885,7 @@ public class RoomScheduling {
 
 			} else
 				System.out.println("failed3333333jjjj");
-				return false;
+			return false;
 
 		}
 
@@ -914,7 +938,7 @@ public class RoomScheduling {
 
 			} else
 				System.out.println("failed44444ccccc");
-				return false;
+			return false;
 
 		}
 
