@@ -33,7 +33,7 @@ public class Booking {
 
         this.shift=shift;
         this.day=day;
-        this.doctors=new ArrayList<Doctor>(2);
+        this.doctors=new ArrayList<Doctor>();
         this.roomNum=roomNum;
         this.surgeryType="normal";
     }

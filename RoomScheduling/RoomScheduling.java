@@ -103,99 +103,54 @@ public class RoomScheduling {
 
 		setTheRooms();
 
-		backtracking(allRooms); 
-		printRoomSchedule(Room1);
-		printRoomSchedule(Room2);
-		printRoomSchedule(Room3);
-		
+//		backtracking(allRooms); 
+//		printRoomSchedule(Room1);
+//		printRoomSchedule(Room2);
+//		printRoomSchedule(Room3);
+
 //		backtrack();
-//		if (backtracking(allRooms)) {
-//
-//			printRoomSchedule(Room1);
-//			printRoomSchedule(Room2);
-//			printRoomSchedule(Room3);
-//		} else {
-//			System.out.println("fail");
-//		}
+		if (backtracking(allRooms)) {
+
+			printRoomSchedule(Room1);
+			printRoomSchedule(Room2);
+			printRoomSchedule(Room3);
+		} else {
+			System.out.println("fail");
+		}
 
 	}
 
 	////////////// backtracking method vvvvvvvvvv rawan
 
 	public static boolean backtracking(Booking[][] rooms) {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 10; j++) {
-				for (int h = 0; h < 30; h++) {
+		for (int i = 0; i < rooms.length; i++) {
+			for (int j = 0; j < rooms[i].length; j++) {
+				for (int h = 0; h < allDoctors.length; h++) {
 					if (checkRoomAvailability(rooms[i][j], allDoctors[h].type)) {
 						if (checkAssignmentValidity(rooms[i], j, h)) {
-							if (!allDoctors[h].assigned) {
-								allDoctors[h].assigned = true;
-								rooms[i][j].doctors.add(allDoctors[h]);
-								if (backtracking(rooms)) {
-									return true;
-								} else {
-									allDoctors[h].assigned = false;
-									rooms[i][j].doctors.remove(allDoctors[h]);
-								}
+//							if (!allDoctors[h].assigned) {
+							allDoctors[h].assigned = true;
+							rooms[i][j].doctors.add(allDoctors[h]);
+							System.out.println("doctor assigned in room" + (i + 1));
+							if (backtracking(rooms)) {
+								return true;
+							} else {
+								allDoctors[h].assigned = false;
+								rooms[i][j].doctors.remove(allDoctors[h]);
+								System.out.println("doctor removed from room" + (i + 1));
 							}
-						}
-					}
+//							}
+						} 
+					} 
 				}
 				return false;
 			}
 		}
 		return true;
-
 	}
 
-//	public static boolean backtracking2(Booking[] room) {
-////		for (int i = 0; i < rooms.length; i++) {
-//		System.out.println("room" + room[0].roomNum);
-//		for (int j = 0; j < room.length; j++) {
-//			for (int h = 0; h < allDoctors.length; h++) {
-//				if (checkRoomAvailability(room[j], allDoctors[h].type)) {
-//					if (checkAssignmentValidity(room, j, h)) {
-//						if (!allDoctors[h].assigned) {
-////							System.out.println("here11111111111");
-//							allDoctors[h].assigned = true;
-//							room[j].doctors.add(allDoctors[h]);
-//
-////								if (rooms[i][j].arrayLength == 0) {
-////									rooms[i][j].doctors.add(allDoctors[h]);
-////								} else
-////									rooms[i][j].doctors[rooms[i][j].doctors.length - 1] = allDoctors[h];
-//////								rooms[i][j].arrayLength++;
-//
-////								System.out.println("doctor assigned in room" + (i + 1));
-//
-//							if (backtracking2(room)) {
-//								return true;
-//							} else {
-////									System.out.println("doc removed from room" + (i + 1));
-//								allDoctors[h].assigned = false;
-//								room[j].doctors.remove(allDoctors[h]);
-////									if (rooms[i][j].arrayLength <= 1) {
-////										rooms[i][j].doctors[rooms[i][j].arrayLength] = null;
-////										rooms[i][j].arrayLength--;
-////									} else {
-////										rooms[i][j].arrayLength--;
-////										rooms[i][j].doctors[rooms[i][j].arrayLength - 1] = null;
-////									}
-//							}
-//						}
-//					}
-//				}
-//			}
-//			return false;
-//		}
-////		}
-//		return true;
-//
-//	}
 
 	public static boolean checkRoomAvailability(Booking room, String type) {
-//		System.out.println("here22222222222");
-
 
 		if (room.doctors.isEmpty()) {
 			return true;
@@ -204,14 +159,14 @@ public class RoomScheduling {
 		if (type.equals("consultant")) {
 			return false;
 		}
-		
-		if(type.equals("senior")) {
-			if(room.doctors.get(0).type.equals("junior")) {
+
+		if (type.equals("senior")) {
+			if (room.doctors.get(0).type.equals("junior") && (room.doctors.size() == 1)) {
 				return true;
 			}
 		}
-		
-		if (room.doctors.get(0).type.equals("senior")) {
+
+		if (room.doctors.get(0).type.equals("senior") && (room.doctors.size() == 1)) {
 			return true;
 		}
 //
@@ -662,10 +617,29 @@ public class RoomScheduling {
 		// check special need + cons 2
 
 		if (allDoctors[allDocIndex].type.equals("senior")) {
-			boolean validBasedOnSpecialNeed = false; // had to comment this part out
+//			boolean validBasedOnSpecialNeed = false; // had to comment this part out
 //					checkBasedOntype(room, bookingIndex, allDocIndex);
 
-			if (validBasedOnSpecialNeed) {
+			if (allDoctors[allDocIndex].specialNeed.equals("normal")) {
+
+				if (room[bookingIndex].roomNum == 1) {
+					times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 2) {
+					times = checkTimesAssigned(Room1, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 3) {
+					times = checkTimesAssigned(Room2, Room1, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+
+				if (times != 1) {
+					System.out.println("failed11111");
+					return false;
+				} else
+					return true;
+
+			}
+			if (validBasedOnSpecialNeed(room, bookingIndex, allDocIndex)) {
 
 				// check const 2
 
@@ -680,12 +654,14 @@ public class RoomScheduling {
 				}
 
 				if (times != 1) {
+					System.out.println("failed22222");
 					return false;
-				}
+				} else
+					return true;
 
-			}
-			// else
-//			return false;
+			} else
+				System.out.println("failed33333");
+				return false;
 		}
 
 		// check special need
@@ -699,31 +675,14 @@ public class RoomScheduling {
 			 * checkBasedOntype(room,bookingIndex,allDocIndex); if(!validBasedOnSpecialNeed)
 			 * return false;
 			 * 
-			 * // const 5 if (room[bookingIndex].roomNum == 3) return false;
+			 * // const 5
 			 */
 
-			if (room[bookingIndex].roomNum == 1) {
-				times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
-			}
-			if (room[bookingIndex].roomNum == 2) {
-				times = checkTimesAssigned(Room1, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
-			}
-			if (room[bookingIndex].roomNum == 3) {
-				times = checkTimesAssigned(Room2, Room1, room[bookingIndex], allDoctors[allDocIndex].name);
-			}
-
-			if (times != 1) {
+			if (room[bookingIndex].roomNum == 3)
 				return false;
-			}
 
-		}
+			if (allDoctors[allDocIndex].specialNeed.equals("normal")) {
 
-		else { // type == consultant
-
-			if (room[bookingIndex].shift == 2) {
-				return false;
-			} else {
-				// const 2
 				if (room[bookingIndex].roomNum == 1) {
 					times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
 				}
@@ -735,18 +694,91 @@ public class RoomScheduling {
 				}
 
 				if (times != 1) {
+					System.out.println("failed11111jjjjj");
 					return false;
+				} else
+					return true;
+
+			}
+
+			if (validBasedOnSpecialNeed(room, bookingIndex, allDocIndex)) {
+
+				// check const 2
+
+				if (room[bookingIndex].roomNum == 1) {
+					times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 2) {
+					times = checkTimesAssigned(Room1, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 3) {
+					times = checkTimesAssigned(Room2, Room1, room[bookingIndex], allDoctors[allDocIndex].name);
 				}
 
-//			if (room[i].shift == 2) {
-//				return false;
-//			} else { // check const2
-//
-//			}
-			}
+				if (times != 1) {
+					System.out.println("failed222222jjj");
+					return false;
+				} else
+					return true;
+
+			} else
+				System.out.println("failed3333333jjjj");
+				return false;
+
 		}
 
-		return true;
+		else { // type == consultant
+
+			if (room[bookingIndex].shift == 2) {
+				System.out.println("failed11111ccccc");
+				return false;
+			}
+
+			if (allDoctors[allDocIndex].specialNeed.equals("normal")) {
+
+				if (room[bookingIndex].roomNum == 1) {
+					times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 2) {
+					times = checkTimesAssigned(Room1, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 3) {
+					times = checkTimesAssigned(Room2, Room1, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+
+				if (times != 1) {
+					System.out.println("failed22222ccccc");
+					return false;
+				} else
+					return true;
+
+			}
+
+			if (validBasedOnSpecialNeed(room, bookingIndex, allDocIndex)) {
+
+				// check const 2
+
+				if (room[bookingIndex].roomNum == 1) {
+					times = checkTimesAssigned(Room2, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 2) {
+					times = checkTimesAssigned(Room1, Room3, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+				if (room[bookingIndex].roomNum == 3) {
+					times = checkTimesAssigned(Room2, Room1, room[bookingIndex], allDoctors[allDocIndex].name);
+				}
+
+				if (times != 1) {
+					System.out.println("failed3333333ccccc");
+					return false;
+				} else
+					return true;
+
+			} else
+				System.out.println("failed44444ccccc");
+				return false;
+
+		}
 
 	}// end func
 
@@ -755,7 +787,7 @@ public class RoomScheduling {
 	public static int checkTimesAssigned(Booking[] roomX, Booking[] roomY, Booking booking, String name) {
 
 		int times = 1;
-//		System.out.println("here ----------111");
+		System.out.println("here ----------111");
 
 		for (int i = 0; i < roomX.length; i++) {
 
