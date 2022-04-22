@@ -147,11 +147,11 @@ public class RoomScheduling {
 			allDoctors[i].assigned = true;
 			System.out.println("doctor assigned in room" + row);
 			combinedRooms[row][col].doctors.add(allDoctors[i]);
-			i++;
+//			i++;
 			if (helper(row, col + 1) == true) {
 				return true;
 			} else {
-				i--;
+//				i--;
 				System.out.println("doctor removed from room" + row);
 				allDoctors[i].assigned = false;
 				combinedRooms[row][col].doctors.remove(allDoctors[i]);
