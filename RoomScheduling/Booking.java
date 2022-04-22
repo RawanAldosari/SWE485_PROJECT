@@ -11,7 +11,7 @@ public class Booking {
     int day;
 
     ArrayList<Doctor> doctors;
-    int arrayLength = 0; 
+//    int arrayLength = 0; 
 
     int roomNum;
     
