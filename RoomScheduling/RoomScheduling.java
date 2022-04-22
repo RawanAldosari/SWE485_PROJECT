@@ -1,5 +1,6 @@
 package RoomScheduling;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RoomScheduling {
@@ -123,11 +124,14 @@ public class RoomScheduling {
 							if (!allDoctors[h].assigned) {
 //							System.out.println("here11111111111");
 								allDoctors[h].assigned = true;
-								if (rooms[i][j].arrayLength == 0) {
-									rooms[i][j].doctors[0] = allDoctors[h];
-								} else
-									rooms[i][j].doctors[rooms[i][j].doctors.length - 1] = allDoctors[h];
-								rooms[i][j].arrayLength++;
+								rooms[i][j].doctors.add(allDoctors[h]);
+
+//								if (rooms[i][j].arrayLength == 0) {
+//									rooms[i][j].doctors.add(allDoctors[h]);
+//								} else
+//									rooms[i][j].doctors[rooms[i][j].doctors.length - 1] = allDoctors[h];
+////								rooms[i][j].arrayLength++;
+								
 								System.out.println("doctor assigned in room" + (i + 1));
 
 								if (backtracking(rooms)) {
@@ -135,13 +139,14 @@ public class RoomScheduling {
 								} else {
 									System.out.println("doc removed from room" + (i + 1));
 									allDoctors[h].assigned = false;
-									if (rooms[i][j].arrayLength <= 1) {
-										rooms[i][j].doctors[rooms[i][j].arrayLength] = null;
-										rooms[i][j].arrayLength--;
-									} else {
-										rooms[i][j].arrayLength--;
-										rooms[i][j].doctors[rooms[i][j].arrayLength - 1] = null;
-									}
+									rooms[i][j].doctors.remove(allDoctors[h]);
+//									if (rooms[i][j].arrayLength <= 1) {
+//										rooms[i][j].doctors[rooms[i][j].arrayLength] = null;
+//										rooms[i][j].arrayLength--;
+//									} else {
+//										rooms[i][j].arrayLength--;
+//										rooms[i][j].doctors[rooms[i][j].arrayLength - 1] = null;
+//									}
 								}
 							}
 						}
@@ -158,22 +163,28 @@ public class RoomScheduling {
 //		System.out.println("here22222222222");
 //		boolean available = false;
 
-		if (room.arrayLength >= 10) {
-			return false;
-		}
+//		if (room.arrayLength >= 10) {
+//			return false;
+//		}
 
-		if (room.arrayLength == 0) {
+		if (room.doctors.isEmpty()) {
 //			System.out.println("stuckkkkkk1111");
 			return true;
 		}
+		
+//		if (room.arrayLength >= 0) {
+////			System.out.println("stuckkkkkk1111");
+//			return true;
+//		}
+		
 		if (type.equals("consultant") || type.equals("senior")) {
 //			System.out.println("stuckkkkkk22222222");
 			return false;
 		}
 
-		for (int i = 0; i < room.doctors.length; i++) {
+		for (int i = 0; i < room.doctors.size(); i++) {
 //			System.out.println("stuckkkkkk333333333");
-			if (room.doctors[i] != null && room.doctors[i].type.equals("senior")) {
+			if (room.doctors.get(i).type.equals("senior")) {
 //				System.out.println("stuckkkkk44444");
 				return true;
 			}
@@ -222,8 +233,10 @@ public class RoomScheduling {
 									// Search for an empty booking in room 1
 									for (int y = 0; y < Room1.length; y++) {
 
-										if (Room1[y].doctors[0] == null) {
-											Doctor[] d = { allDoctors[i], allDoctors[j] };
+										if (Room1[y].doctors.isEmpty()) {
+											ArrayList<Doctor> d = new ArrayList<Doctor>(); 
+											d.add( allDoctors[i]); 
+											d.add( allDoctors[j]); 
 											Room1[y].doctors = d;
 											Room1[y].roomNum = 1;
 											Room1[y].surgeryType = "needs x-ray";
@@ -247,9 +260,10 @@ public class RoomScheduling {
 									// Search for an empty booking in room 2
 									for (int y = 0; y < Room2.length; y++) {
 
-										if (Room2[y].doctors[0] == null) {
-											Doctor[] d = { allDoctors[i], allDoctors[j] };
-											Room2[y].doctors = d;
+										if (Room2[y].doctors.isEmpty()) {
+											ArrayList<Doctor> d = new ArrayList<Doctor>(); 
+											d.add( allDoctors[i]); 
+											d.add( allDoctors[j]); 											Room2[y].doctors = d;
 											Room2[y].roomNum = 1;
 											Room2[y].surgeryType = "needs streaming";
 											room2NumOfBookedSlots++;
@@ -274,9 +288,10 @@ public class RoomScheduling {
 									// Search for an empty booking in room 1 on day 2 or 4
 									for (int y = 0; y < Room1.length; y++) {
 
-										if (Room1[y].doctors[0] == null && (Room1[y].day == 2 || Room1[y].day == 4)) {
-											Doctor[] d = { allDoctors[i], allDoctors[j] };
-											Room1[y].doctors = d;
+										if (Room1[y].doctors.isEmpty() && (Room1[y].day == 2 || Room1[y].day == 4)) {
+											ArrayList<Doctor> d = new ArrayList<Doctor>(); 
+											d.add( allDoctors[i]); 
+											d.add( allDoctors[j]); 											Room1[y].doctors = d;
 											Room1[y].roomNum = 1;
 											Room1[y].surgeryType = "brain";
 											room1NumOfBookedSlots++;
@@ -298,10 +313,11 @@ public class RoomScheduling {
 
 										for (int y = 0; y < Room2.length; y++) {
 
-											if (Room2[y].doctors[0] == null
+											if (Room2[y].doctors.isEmpty()
 													&& (Room2[y].day == 2 || Room2[y].day == 4)) {
-												Doctor[] d = { allDoctors[i], allDoctors[j] };
-												Room2[y].doctors = d;
+												ArrayList<Doctor> d = new ArrayList<Doctor>(); 
+												d.add( allDoctors[i]); 
+												d.add( allDoctors[j]); 												Room2[y].doctors = d;
 												Room2[y].roomNum = 1;
 												Room2[y].surgeryType = "brain";
 												room2NumOfBookedSlots++;
@@ -351,16 +367,16 @@ public class RoomScheduling {
 
 	}
 
-	public static void printDoctors(Doctor[] docs) {
+	public static void printDoctors(ArrayList<Doctor> docs) {
 
-		for (int i = 0; i < docs.length; i++) {
+		for (int i = 0; i < docs.size(); i++) {
 
 			// Just for now until we complete the assignment
-			if (docs[i] == null) {
-				System.out.println("Doctor " + docs[i]);
+			if (docs.get(i) == null) {
+				System.out.println("Doctor " + docs.get(i));
 			} else {
-				System.out.println("Doctor " + docs[i].name);
-				System.out.println("Type " + docs[i].type);
+				System.out.println("Doctor " + docs.get(i).name);
+				System.out.println("Type " + docs.get(i).type);
 
 			}
 
@@ -455,16 +471,16 @@ public class RoomScheduling {
              
              for (int j=0; j< Room.length; j++) {
             	 
-            	 if (!checkRoomAvailability(Room, allDoctors[i].type))
+            	 if (!checkRoomAvailability(Room[j], allDoctors[i].type))
             		 return ;
-             if ( Room[j].doctors[0] != null ){// should we place the consultant at Room[j].doctors[0]? 
+             if ( !Room[j].doctors.isEmpty() ){// should we place the consultant at Room[j].doctors[0]? 
             	 // كأنه بيسوي عملية لحاله ومعه جونيور
         	   // go to next 
         	   System.out.println("spot is already taken");
         	   continue;
            }
 
-            	 Room[j].doctors[0]= allDoctors[i];
+            	 Room[j].doctors.add(allDoctors[i]);
             	 Room[j].surgeryType = allDoctors[i].specialNeed;
  
             	 allDoctors[i].assigned = true;
@@ -472,7 +488,7 @@ public class RoomScheduling {
              boolean isValid = checkAssignmentValidity(Room,j,i);
              
              if (!isValid) { // change assignment, and go to other booking in Room
-            	 Room[j].doctors[0]= null;
+            	 Room[j].doctors.clear();
             	 Room[j].surgeryType = null;
             	 allDoctors[i].assigned = false;
              }
@@ -503,16 +519,16 @@ public class RoomScheduling {
 	            	 
 	             for (int j=0; j< Room.length; j++) {
 	           
-	            	 if (!checkRoomAvailability(Room, allDoctors[i].type))
+	            	 if (!checkRoomAvailability(Room[j], allDoctors[i].type))
 	            		 return ;
 	            	 
-	             if ( Room[j].doctors[0] != null ){
+	             if (!Room[j].doctors.isEmpty()){
 	        	   // go to next 
 	        	   System.out.println("spot is already taken");
 	        	   continue;
 	           }
 	            
-	            	 Room[j].doctors[0]= allDoctors[i];
+	            	 Room[j].doctors.add(allDoctors[i]);
 	            	 Room[j].surgeryType = allDoctors[i].specialNeed;
 	            
 	            	 allDoctors[i].assigned = true;
@@ -520,7 +536,7 @@ public class RoomScheduling {
 	             boolean isValid = checkAssignmentValidity(Room,j,i);
 	             
 	             if (!isValid) { // change assignment, and go to other booking in Room
-	            	 Room[j].doctors[0]= null;
+	            	 Room[j].doctors.clear();;
 	            	 Room[j].surgeryType = null;
 	            	 allDoctors[i].assigned = false;
 	             }
@@ -551,10 +567,10 @@ public class RoomScheduling {
 	             
 	             for (int j=0; j< Room.length; j++) {
 	            	
-	            	 if (!checkRoomAvailability(Room, allDoctors[i].type)) // room is full
+	            	 if (!checkRoomAvailability(Room[j], allDoctors[i].type)) // room is full
 	            		 return ;
 	            	 
-	             if ( Room[j].doctors[1] != null ){
+	             if ( Room[j].doctors.get(1) != null ){
 	        	   // go to next 
 	        	   System.out.println("spot is already taken");
 	        	   continue;
@@ -563,9 +579,10 @@ public class RoomScheduling {
 	             // junior has a special need 
 	             if (allDoctors[i].specialNeed.equals("brain") || allDoctors[i].specialNeed.equals("x-ray") || allDoctors[i].specialNeed.equals("streaming")){
 	             // assign special juniors to none seniors, or to seniors with the same special need
-	             if ( Room[j].doctors[0].specialNeed.equals("none") ||  Room[j].doctors[0].specialNeed.equals(allDoctors[i].specialNeed)) {
+	             if ( Room[j].doctors.get(0).specialNeed.equals("none") ||  Room[j].doctors.get(0).specialNeed.equals(allDoctors[i].specialNeed)) {
 	             
-	            	 Room[j].doctors[1]= allDoctors[i];
+//	            	 Room[j].doctors[1]= allDoctors[i];
+	            	 Room[j].doctors.add(allDoctors[i]);
 	            	 Room[j].surgeryType = allDoctors[i].specialNeed;
 	            
 	            	 allDoctors[i].assigned = true;
@@ -573,7 +590,7 @@ public class RoomScheduling {
 	             boolean isValid = checkAssignmentValidity(Room,j,i);
 	             
 	             if (!isValid) { // change assignment, and go to other booking in Room
-	            	 Room[j].doctors[1]= null;
+	            	 Room[j].doctors.remove(1);
 	            	 Room[j].surgeryType = null;
 	            	 allDoctors[i].assigned = false;
 	             }
@@ -584,7 +601,7 @@ public class RoomScheduling {
 	             
 	             // junior doesn't have a special need , so it can be assigned with any senior (none)
 	             else {
-	            	 Room[j].doctors[1]= allDoctors[i];
+	            	 Room[j].doctors.add( allDoctors[i]);
 	            	 // I commented the line below bc it will take the senior special need 
 	            	// Room[j].surgeryType = allDoctors[i].specialNeed;
 	            
@@ -593,7 +610,7 @@ public class RoomScheduling {
 	             boolean isValid = checkAssignmentValidity(Room,j,i);
 	             
 	             if (!isValid) { // change assignment, and go to other booking in Room
-	            	 Room[j].doctors[1]= null;
+	            	 Room[j].doctors.remove(1);
 	            	 Room[j].surgeryType = null;
 	            	 allDoctors[i].assigned = false;
 	             }
@@ -724,9 +741,9 @@ public class RoomScheduling {
 		for (int i = 0; i < roomX.length; i++) {
 
 			if ((roomX[i].day == booking.day) && (roomX[i].shift == booking.shift) && (roomX[i].arrayLength > 0)) {
-				for (int j = 0; j < roomX[i].doctors.length; j++) {
-					System.out.println("here:" + roomX[i].doctors[j].name + " og: " + name);
-					if (roomX[i].doctors[j].name.equals(name)) {
+				for (int j = 0; j < roomX[i].doctors.size(); j++) {
+					System.out.println("here:" + roomX[i].doctors.get(j).name + " og: " + name);
+					if (roomX[i].doctors.get(j).name.equals(name)) {
 						System.out.println("found duplicate");
 						times++;
 					}
@@ -738,9 +755,9 @@ public class RoomScheduling {
 		for (int i = 0; i < roomY.length; i++) {
 
 			if ((roomY[i].day == booking.day) && (roomY[i].shift == booking.shift) && (roomY[i].arrayLength > 0)) {
-				for (int j = 0; j < roomY[i].doctors.length; j++) {
-					System.out.println("here:" + roomY[i].doctors[j].name + " og: " + name);
-					if (roomY[i].doctors[j].name.equals(name)) {
+				for (int j = 0; j < roomY[i].doctors.size(); j++) {
+					System.out.println("here:" + roomY[i].doctors.get(j).name + " og: " + name);
+					if (roomY[i].doctors.get(j).name.equals(name)) {
 						System.out.println("found duplicate");
 						times++;
 					}
