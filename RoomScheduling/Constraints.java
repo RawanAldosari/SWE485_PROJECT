@@ -113,9 +113,9 @@ public class Constraints {
 	}
 
 	public static boolean isValidS(int row, int col, Doctor doc, Booking booking) {
-		if(RoomScheduling.checkAssignmetOfDoctors()) {
-			return true; 
-		}
+//		if(RoomScheduling.checkAssignmetOfDoctors()) {
+//			return true; 
+//		}
 		return true;
 	}
 

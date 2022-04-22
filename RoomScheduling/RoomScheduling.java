@@ -107,14 +107,14 @@ public class RoomScheduling {
 		setTheRooms();
 		
 		
-//		setTheRooms2(); 
-//		if(solve(combinedRooms)) {
-//			System.out.println("success");
-//			printRoomsSchedule(1); 
-//			printRoomsSchedule(2); 
-//			printRoomsSchedule(3); 
-//		} else 
-//			System.out.println("fail");
+		setTheRooms2(); 
+		if(solve(combinedRooms)) {
+			System.out.println("success");
+			printRoomsSchedule(1); 
+			printRoomsSchedule(2); 
+			printRoomsSchedule(3); 
+		} else 
+			System.out.println("fail");
 			
 		
 //		backtracking(allRooms); 
@@ -123,14 +123,14 @@ public class RoomScheduling {
 //		printRoomSchedule(Room3);
 
 //		backtrack();
-		if (backtracking(allRooms)) {
-
-			printRoomSchedule(Room1);
-			printRoomSchedule(Room2);
-			printRoomSchedule(Room3);
-		} else {
-			System.out.println("fail");
-		}
+//		if (backtracking(allRooms)) {
+//
+//			printRoomSchedule(Room1);
+//			printRoomSchedule(Room2);
+//			printRoomSchedule(Room3);
+//		} else {
+//			System.out.println("fail");
+//		}
 
 	}
 
