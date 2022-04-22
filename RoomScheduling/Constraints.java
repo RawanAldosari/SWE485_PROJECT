@@ -81,10 +81,12 @@ public class Constraints {
 		}
 		
 		// constraint 2 
+		
 		for(int i = 0 ; i < 6; i++ ) {
-			if(row != i && RoomScheduling.combinedRooms[i][col].doctors.contains(doc)) {
-				return false; 
-			}
+			if(RoomScheduling.combinedRooms[i][col] != null) 
+				if(RoomScheduling.combinedRooms[i][col].doctors.contains(doc))
+					return false; 
+			
 		}
 
 		if (doc.type.equals("consultant")) {
@@ -102,20 +104,28 @@ public class Constraints {
 
 	public static boolean isValidC(int row, int col, Doctor doc, Booking booking) {
 		// constraint 1
+		if(booking != null) {
 		if (booking.shift == 2) {
 			return false;
+		}
 		}
 		if(doc.assigned) {
 			return false; 
 		}
+		if(!booking.doctors.isEmpty())
+			return false; 
 		
 		return true;
 	}
 
 	public static boolean isValidS(int row, int col, Doctor doc, Booking booking) {
-//		if(RoomScheduling.checkAssignmetOfDoctors()) {
+		if(!booking.doctors.isEmpty())
+			return false; 
+//		
+//		if(RoomScheduling.checkAssignmetOfDoctors2()) {
 //			return true; 
 //		}
+		
 		return true;
 	}
 

@@ -55,12 +55,12 @@ public class RoomScheduling {
 
 		for (int i = 0; i < seniors.length; i++) {
 
-			allDoctors[i + (consultants.length - 1)] = new Doctor(seniors[i], "senior", "none");
+			allDoctors[i + (consultants.length)] = new Doctor(seniors[i], "senior", "none");
 		}
 
 		for (int i = 0; i < juniors.length; i++) {
 
-			allDoctors[i + (seniors.length + consultants.length - 1)] = new Doctor(juniors[i], "junior", "none");
+			allDoctors[i + (seniors.length + consultants.length)] = new Doctor(juniors[i], "junior", "none");
 		}
 
 		for (int i = 0; i < allDoctors.length; i++) {
@@ -108,6 +108,7 @@ public class RoomScheduling {
 		
 		
 		setTheRooms2(); 
+		
 		if(solve(combinedRooms)) {
 			System.out.println("success");
 			printRoomsSchedule(1); 
@@ -140,21 +141,22 @@ public class RoomScheduling {
 	
 	public static boolean helper(int row, int col) {
 		
-		if(col == 4) {
+		if(col == 5) {
 			row += 1; 
 			col = 0; 
 		}
 		
-		if(row == 5) return true; 
+		if(row == 6) return true; 
 		
 //		if(!combinedRooms[row][col].doctors.isEmpty()) {
 //			if()
 //		}
 		
 		for(int i = 0 ; i < allDoctors.length ; i++) {
-			if(!checkRoomAvailability(combinedRooms[row][col],allDoctors[i].type )) {
-				continue; 
-			} if(!Constraints.isValid(row, col, allDoctors[i])) {
+//			if(!checkRoomAvailability(combinedRooms[row][col],allDoctors[i].type )) {
+//				continue; 
+//			} 
+		if(!Constraints.isValid(row, col, allDoctors[i])) {
 				continue; 
 			}			
 			allDoctors[i].assigned = true; 
@@ -221,7 +223,7 @@ public class RoomScheduling {
 
 	public static boolean checkRoomAvailability(Booking room, String type) {
 
-		if (room.doctors.isEmpty()) {
+		if (room.doctors != null && room.doctors.isEmpty()) {
 			return true;
 		}
 
@@ -469,6 +471,17 @@ public class RoomScheduling {
 		}
 
 		return isAllDoctorsAssigned;
+
+	}
+	
+	public static boolean checkAssignmetOfDoctors2() {
+
+		for (int i = 0; i < allDoctors.length; i++) {
+			if(! allDoctors[i].assigned)
+				return false; 
+		}
+
+		return true;
 
 	}
 
