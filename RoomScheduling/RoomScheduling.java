@@ -164,6 +164,7 @@ public class RoomScheduling {
 			if (room.doctors.get(0).type.equals("junior") && (room.doctors.size() == 1)) {
 				return true;
 			}
+			else return false; 
 		}
 
 		if (room.doctors.get(0).type.equals("senior") && (room.doctors.size() == 1)) {
