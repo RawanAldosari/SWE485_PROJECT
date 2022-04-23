@@ -43,12 +43,12 @@ public class RoomScheduling {
 
 		System.out.println("Who are the doctors who needs a surgery room with an x-ray machine?");
 //		String[] doctorsWhoNeedsXRay = in.nextLine().split(",");
-		String[] doctorsWhoNeedsXRay = "doctorj5,doctorS7,doctorS9,doctorS14,doctorS17".split(",");
+		String[] doctorsWhoNeedsXRay = "doctorj2,doctorS7,doctorS9,doctorS14,doctorS17".split(",");
 		// doctorS7,doctorS9,doctorS14,doctorS17
 
 		System.out.println("Who are the doctors who needs a surgery room equipped with on-line streaming?");
 //		String[] doctorsWhoNeedsStreaming = in.nextLine().split(",");
-		String[] doctorsWhoNeedsStreaming = "doctorS1,doctorS2,doctorS11".split(",");
+		String[] doctorsWhoNeedsStreaming = "doctorC2,doctorS1,doctorS2,doctorS11".split(",");
 		// doctorS1,doctorS2,doctorS11
 		
 		in.close();
