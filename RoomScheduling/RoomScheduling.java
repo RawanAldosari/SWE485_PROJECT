@@ -59,15 +59,16 @@ public class RoomScheduling {
 		in.close();
 
 		// Filling the doctors array
-		for (int i = 0; i < consultants.length; i++) {
-
-			allDoctors[i] = new Doctor(consultants[i], "consultant", "normal");
-		}
-
 		for (int i = 0; i < seniors.length; i++) {
 
-			allDoctors[i + (consultants.length)] = new Doctor(seniors[i], "senior", "normal");
+			allDoctors[i] = new Doctor(seniors[i], "senior", "normal");
 		}
+		
+		for (int i = 0; i < consultants.length; i++) {
+
+			allDoctors[i + (seniors.length)] = new Doctor(consultants[i], "consultant", "normal");
+		}
+
 
 		for (int i = 0; i < juniors.length; i++) {
 
