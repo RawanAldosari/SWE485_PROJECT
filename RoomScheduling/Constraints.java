@@ -65,18 +65,18 @@ public class Constraints {
 		Booking currentBooking = RoomScheduling.combinedRooms[row][col];
 		boolean validPlace = true; 
 
-		if (doc.type.equals("consultant")) {
-			validPlace = isValidC(row, col, doc, currentBooking);
-		}
-
 		if (doc.type.equals("senior")) {
 			validPlace =  isValidS(row, col, doc, currentBooking);
 		}
 		else
 			validPlace = isValidJ(row, col, doc, currentBooking);
 		
+		if (doc.type.equals("consultant")) {
+			validPlace = isValidC(row, col, doc, currentBooking);
+		}
 		
-//		if (!doc.specialNeed.equals("normal")) {
+		
+		if (!doc.specialNeed.equals("normal")) {
 			// constraint 7
 			if (doc.specialNeed.equals("x-ray") && currentBooking.roomNum != 1) {
 				validPlace = validPlace && false; 
@@ -90,7 +90,7 @@ public class Constraints {
 			if (doc.specialNeed.equals("streaming") && currentBooking.roomNum != 2) {
 				validPlace = validPlace && false;  
 			}
-//		}
+		}
 
 		// constraint 2
 
@@ -113,24 +113,31 @@ public class Constraints {
 			return false;
 		}
 		
-		if (booking.doctors.isEmpty())
-			return true;
+//		if (booking.doctors.isEmpty())
+//			return false;
+		
+		for(int i = 0 ; i < booking.doctors.size() ; i++) {
+			if (!booking.doctors.get(i).type.equals("senior")) {
+				return false; 
+			}
+		}
 
-		return false;
+		return true;
 	}
 
 	public static boolean isValidS(int row, int col, Doctor doc, Booking booking) {
+		
+		boolean assign = false; 
+//		
+		if(doc.assigned) {
+			if (RoomScheduling.numOfAssignedDocs >= 30)
+				assign = true; 
+		}
+		
 		if (booking.doctors.isEmpty())
 			return true;
-//		
-//		if(doc.assigned) {
-//			if (RoomScheduling.numOfAssignedDocs >= 30)
-//				return true; 
-//			else
-//				return false; 
-//		}
 
-		return false;
+		return assign;
 	}
 
 	public static boolean isValidJ(int row, int col, Doctor doc, Booking booking) {
@@ -141,6 +148,13 @@ public class Constraints {
 		if (doc.assigned) {
 			return false;
 		}
+		
+		for(int i = 0 ; i < booking.doctors.size() ; i++) {
+			if (!booking.doctors.get(i).type.equals("senior")) {
+				return false; 
+			}
+		}
+		
 		if (booking.doctors.isEmpty()) {
 			return false;
 		}
@@ -148,11 +162,7 @@ public class Constraints {
 //		if (!booking.doctors.get(0).type.equals("senior")) {
 //			return false;
 //		}
-		for(int i = 0 ; i < booking.doctors.size() ; i++) {
-			if (!booking.doctors.get(i).type.equals("senior")) {
-				return false; 
-			}
-		}
+		
 		
 		return true;
 	}

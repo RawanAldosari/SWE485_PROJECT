@@ -23,6 +23,8 @@ public class RoomScheduling {
 	static Doctor[] allDoctors = new Doctor[30];
 	
 	static int numOfAssignedDocs = 0; 
+	
+	static ArrayList<Doctor> assignedDocs = new ArrayList<Doctor>();
 
 	Scanner scan = new Scanner(System.in);
 
@@ -144,14 +146,22 @@ public class RoomScheduling {
 		}
 			
 		for (int i = 0; i < allDoctors.length; i++) {
-
+			
+			boolean assignedBefore = false; 
+			
+			if(allDoctors[i].assigned)
+				assignedBefore = true; 
 			
 			if (!Constraints.isValid(row, col, allDoctors[i])) {
 				continue;
 			}
 			
-			if(!allDoctors[i].assigned) {
+			if(!assignedDocs.contains(allDoctors[i])) {
 				numOfAssignedDocs++; 
+				assignedDocs.add(allDoctors[i]); 
+			} else {
+				if(allDoctors[i].assigned)
+					numOfAssignedDocs--; 
 			}
 			
 			allDoctors[i].assigned = true;
@@ -167,7 +177,12 @@ public class RoomScheduling {
 //				i--;
 //				numOfAssignedDocs--; 
 				System.out.println("doctor removed from room" + row);
+//				allDoctors[i].assigned = false;
 				allDoctors[i].assigned = false;
+				if(!assignedBefore) {
+//					numOfAssignedDocs--;
+					assignedDocs.remove(allDoctors[i]);
+				}
 				combinedRooms[row][col].doctors.remove(allDoctors[i]);
 				combinedRooms[row][col].surgeryType = "normal"; 
 			}
