@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class RoomScheduling {
 
 
-//	static ArrayList<Booking> combinedRooms = new ArrayList<Booking>(30);
 	static Booking[][] combinedRooms = new Booking[6][5];
 
 	static Doctor[] allDoctors = new Doctor[30];
@@ -23,7 +22,7 @@ public class RoomScheduling {
 		System.out.println("Please enter the names of the consultants");
 //		String[] consultants = in.nextLine().split(",");
 		String[] consultants = "doctorC1,doctorC2,doctorC3,doctorC4,doctorC5,doctorC6".split(",");
-		// doctorC1,doctorC2,doctorC3,doctorC4,doctorC5,doctorC6
+//		 doctorC1,doctorC2,doctorC3,doctorC4,doctorC5,doctorC6
 		
 		System.out.println("Please enter the names of the senior doctors");
 //		String[] seniors = in.nextLine().split(",");
@@ -44,12 +43,12 @@ public class RoomScheduling {
 		System.out.println("Who are the doctors who needs a surgery room with an x-ray machine?");
 //		String[] doctorsWhoNeedsXRay = in.nextLine().split(",");
 		String[] doctorsWhoNeedsXRay = "doctorj2,doctorS7,doctorS9,doctorS14,doctorS17".split(",");
-		// doctorS7,doctorS9,doctorS14,doctorS17
+		// doctorj2,doctorS7,doctorS9,doctorS14,doctorS17
 
 		System.out.println("Who are the doctors who needs a surgery room equipped with on-line streaming?");
 //		String[] doctorsWhoNeedsStreaming = in.nextLine().split(",");
 		String[] doctorsWhoNeedsStreaming = "doctorC2,doctorS1,doctorS2,doctorS11".split(",");
-		// doctorS1,doctorS2,doctorS11
+		// doctorC2,doctorS1,doctorS2,doctorS11
 		
 		in.close();
 
@@ -69,15 +68,6 @@ public class RoomScheduling {
 			allDoctors[i + (seniors.length + juniors.length)] = new Doctor(consultants[i], "consultant", "normal");
 		}
 
-//		for (int i = 0; i < juniors.length; i++) {
-//
-//			allDoctors[i + (seniors.length + consultants.length)] = new Doctor(juniors[i], "junior", "normal");
-//		}
-
-//		for (int i = 0; i < allDoctors.length; i++) {
-//			System.out.println(allDoctors[i].name);
-//
-//		}
 
 		// Labeling doctors who need brain surgery
 		for (int i = 0; i < allDoctors.length; i++) {
@@ -120,7 +110,6 @@ public class RoomScheduling {
 		setTheRooms();
 
 		if (schedule(combinedRooms)) {
-//			System.out.println("success");
 			printRoomsSchedule(1);
 			printRoomsSchedule(2);
 			printRoomsSchedule(3);
@@ -133,6 +122,7 @@ public class RoomScheduling {
 		return backtracking(0, 0);
 	}
 
+	
 	public static boolean backtracking(int row, int col) {
 
 		// Move to the next row if we reached the last column
@@ -168,6 +158,7 @@ public class RoomScheduling {
 			}
 
 			// Check if the doctor has been assigned before
+			// DFS Search of all valid options
 			if (!assignedDocs.contains(allDoctors[i])) {
 				// if not, increase the number of assigned doctors
 				numOfAssignedDocs++;
@@ -177,7 +168,6 @@ public class RoomScheduling {
 
 			// Assign doctor
 			allDoctors[i].assigned = true;
-//			System.out.println("doctor assigned in room" + row);
 			combinedRooms[row][col].doctors.add(allDoctors[i]);
 
 			// only change the room type if it was normal
@@ -192,7 +182,6 @@ public class RoomScheduling {
 			} else {
 
 				// if we can successfully assign doctors, remove last assigned doctor
-//				System.out.println("doctor removed from room" + row);
 				allDoctors[i].assigned = false;
 
 				if (!assignedBefore) {
@@ -247,16 +236,6 @@ public class RoomScheduling {
 		}
 	}
 
-	public static boolean checkAssignmetOfDoctors() {
-
-		for (int i = 0; i < allDoctors.length; i++) {
-			if (allDoctors[i].assigned == false)
-				return false;
-		}
-
-		return true;
-
-	}
 
 	public static void setTheRooms() {
 		// Booking shift, day, room number
