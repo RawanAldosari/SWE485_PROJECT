@@ -15,7 +15,7 @@ public class Doctor {
 
         this.name = name;
         this.type = type;
-        // Initially rhe doctor is not assigned to any room
+        // Initially the doctor is not assigned to any room
         this.assigned = false;
         this.specialNeed=specialNeed;
     }

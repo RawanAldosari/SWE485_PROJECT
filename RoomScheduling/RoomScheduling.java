@@ -28,22 +28,22 @@ public class RoomScheduling {
 //		String[] seniors = in.nextLine().split(",");
 		String[] seniors = "doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18"
 				.split(",");
-		// doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18
+//		 doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18
 		
 		System.out.println("Please enter the names of junior doctors");
 //		String[] juniors = in.nextLine().split(",");
 		String[] juniors = "doctorj1,doctorj2,doctorj3,doctorj4,doctorj5,doctorj6".split(",");
-		// doctorj1,doctorj2,doctorj3,doctorj4,doctorj5,doctorj6
+//		 doctorj1,doctorj2,doctorj3,doctorj4,doctorj5,doctorj6
 
 		System.out.println("Who are the doctors who will do the Brain Surgery?");
 //		String[] brainSurgeons = in.nextLine().split(",");
 		String[] brainSurgeons = "doctorj6,doctorS3,doctorS4,doctorS16".split(",");
-		// doctorj6,doctorS3,doctorS4,doctorS16
+//		 doctorj6,doctorS3,doctorS4,doctorS16
 
 		System.out.println("Who are the doctors who needs a surgery room with an x-ray machine?");
 //		String[] doctorsWhoNeedsXRay = in.nextLine().split(",");
 		String[] doctorsWhoNeedsXRay = "doctorj2,doctorS7,doctorS9,doctorS14,doctorS17".split(",");
-		// doctorj2,doctorS7,doctorS9,doctorS14,doctorS17
+//		 doctorj2,doctorS7,doctorS9,doctorS14,doctorS17
 
 		System.out.println("Who are the doctors who needs a surgery room equipped with on-line streaming?");
 //		String[] doctorsWhoNeedsStreaming = in.nextLine().split(",");

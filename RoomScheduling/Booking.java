@@ -11,8 +11,7 @@ public class Booking {
     int day;
 
     ArrayList<Doctor> doctors;
-//    int arrayLength = 0; 
-
+    
     int roomNum;
     
     //SurgeryType could be "needs x-ray" or "brain" or "needs streaming" or "normal"

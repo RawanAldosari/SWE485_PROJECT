@@ -101,7 +101,7 @@ public class Constraints {
 		}
 
 		for (int i = 0; i < 5; i++) {
-			// Checks doctors assigned to the rooms in that column
+			// Checks doctors assigned to the rooms in that row
 			if (RoomScheduling.combinedRooms[row][i].doctors.contains(doc))
 				return false; 
 		}
@@ -151,6 +151,7 @@ public class Constraints {
 		if (booking.roomNum == 3) {
 			return false;
 		}
+		
 		if (doc.assigned) {
 			return false;
 		}
