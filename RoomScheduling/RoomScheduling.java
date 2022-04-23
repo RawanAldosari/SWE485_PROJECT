@@ -46,7 +46,7 @@ public class RoomScheduling {
 
 		System.out.println("Who are the doctors who will do the Brain Surgery?");
 //		String[] brainSurgeons = in.nextLine().split(",");
-		String[] brainSurgeons = "rawanS3,rawanS4,rawanj4".split(",");
+		String[] brainSurgeons = "rawanS3,rawanS4,rawanS16".split(",");
 
 		System.out.println("Who are the doctors who needs a surgery room with an x-ray machine?");
 //		String[] doctorsWhoNeedsXRay = in.nextLine().split(",");
@@ -54,7 +54,7 @@ public class RoomScheduling {
 
 		System.out.println("Who are the doctors who needs a surgery room equipped with on-line streaming?");
 //		String[] doctorsWhoNeedsStreaming = in.nextLine().split(",");
-		String[] doctorsWhoNeedsStreaming = "rawanj6,rawanS1,rawanS2,rawanS11".split(",");
+		String[] doctorsWhoNeedsStreaming = "rawanS1,rawanS2,rawanS11".split(",");
 
 		in.close();
 
@@ -168,7 +168,12 @@ public class RoomScheduling {
 			allDoctors[i].assigned = true;
 			System.out.println("doctor assigned in room" + row);
 			combinedRooms[row][col].doctors.add(allDoctors[i]);
-			combinedRooms[row][col].surgeryType = allDoctors[i].specialNeed; 
+			if(combinedRooms[row][col].surgeryType.equals("normal") && !combinedRooms[row][col].doctors.isEmpty()) {
+				combinedRooms[row][col].surgeryType = allDoctors[i].specialNeed; 
+
+			}
+//			else 
+//				combinedRooms[row][col].surgeryType = allDoctors[i].specialNeed; 
 //			i++;
 			
 			if (helper(row, col + 1) == true) {
@@ -185,7 +190,9 @@ public class RoomScheduling {
 					assignedDocs.remove(allDoctors[i]);
 				}
 				combinedRooms[row][col].doctors.remove(allDoctors[i]);
-				combinedRooms[row][col].surgeryType = "normal"; 
+				if(combinedRooms[row][col].doctors.isEmpty()) {
+					combinedRooms[row][col].surgeryType = "normal"; 
+				}
 			}
 
 		}
@@ -194,7 +201,7 @@ public class RoomScheduling {
 
 	public static void printRoomSchedule(Booking[] room) {
 
-		System.out.println("Room " + room[0].roomNum + " Schedule");
+		System.out.printf("Room " + room[0].roomNum + " Schedule");
 
 		for (int i = 0; i < room.length; i++) {
 
@@ -208,12 +215,15 @@ public class RoomScheduling {
 	}
 
 	public static void printRoomsSchedule(int roomNum) {
-
-		System.out.println("Room " + roomNum + " Schedule");
+		
+		System.out.printf("\n\n\n------------------------\n");
+		System.out.printf("Room " + roomNum + " Schedule");
+		System.out.printf("\n------------------------\n");
+		
 		for (int i = 0; i < combinedRooms.length; i++) {
 			for (int j = 0; j < combinedRooms[i].length; j++) {
 				if (combinedRooms[i][j].roomNum == roomNum) {
-					System.out.println("day " + combinedRooms[i][j].day);
+					System.out.printf("\nday " + combinedRooms[i][j].day + "\n");
 					System.out.println("Shift " + combinedRooms[i][j].shift);
 					System.out.println("Surgery type " + combinedRooms[i][j].surgeryType);
 
