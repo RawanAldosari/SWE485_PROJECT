@@ -68,7 +68,7 @@ public class Constraints {
 		if (doc.type.equals("senior")) {
 			validPlace =  isValidS(doc, currentBooking);
 		}
-		else
+		if (doc.type.equals("junior"))
 			validPlace = isValidJ(doc, currentBooking);
 		
 		if (doc.type.equals("consultant")) {
@@ -100,6 +100,11 @@ public class Constraints {
 				return false; 
 		}
 
+		for (int i = 0; i < 5; i++) {
+			// Checks doctors assigned to the rooms in that column
+			if (RoomScheduling.combinedRooms[row][i].doctors.contains(doc))
+				return false; 
+		}
 		
 		return validPlace; 
 
