@@ -91,19 +91,22 @@ public class Constraints {
 				validPlace = validPlace && false;  
 			}
 		}
+		
 
 		// constraint 2
-
 		for (int i = 0; i < 6; i++) {
+			// Checks doctors assigned to the rooms in that column
 			if (RoomScheduling.combinedRooms[i][col].doctors.contains(doc))
 				return false; 
 		}
 
+		
 		return validPlace; 
 
 	}
 
 	public static boolean isValidC(int row, int col, Doctor doc, Booking booking) {
+		
 		// constraint 1
 		if (booking.shift == 2) {
 			return false;
@@ -112,9 +115,6 @@ public class Constraints {
 		if (doc.assigned) {
 			return false;
 		}
-		
-//		if (booking.doctors.isEmpty())
-//			return false;
 		
 		for(int i = 0 ; i < booking.doctors.size() ; i++) {
 			if (!booking.doctors.get(i).type.equals("senior")) {
@@ -128,7 +128,7 @@ public class Constraints {
 	public static boolean isValidS(int row, int col, Doctor doc, Booking booking) {
 		
 		boolean assign = true; 
-//		
+
 		if(doc.assigned) {
 			if (RoomScheduling.numOfAssignedDocs < 30)
 				assign = false; 
@@ -141,6 +141,7 @@ public class Constraints {
 	}
 
 	public static boolean isValidJ(int row, int col, Doctor doc, Booking booking) {
+		
 		// constraint 5
 		if (booking.roomNum == 3) {
 			return false;
@@ -149,6 +150,7 @@ public class Constraints {
 			return false;
 		}
 		
+		// constraint 4 and 3
 		for(int i = 0 ; i < booking.doctors.size() ; i++) {
 			if (!booking.doctors.get(i).type.equals("senior")) {
 				return false; 
@@ -158,11 +160,6 @@ public class Constraints {
 		if (booking.doctors.isEmpty()) {
 			return false;
 		}
-		// constraint 4 and 3
-//		if (!booking.doctors.get(0).type.equals("senior")) {
-//			return false;
-//		}
-		
 		
 		return true;
 	}

@@ -5,25 +5,14 @@ import java.util.Scanner;
 
 public class RoomScheduling {
 
-	static Booking[] Room1 = new Booking[10];
-	// We may ignore the variable below
-	static int room1NumOfBookedSlots = 0;
-	static Booking[] Room2 = new Booking[10];
-	// We may ignore the variable below
-	static int room2NumOfBookedSlots = 0;
-	static Booking[] Room3 = new Booking[10];
-	// We may ignore the variable below
-	static int room3NumOfBookedSlots = 0;
 
 //	static ArrayList<Booking> combinedRooms = new ArrayList<Booking>(30);
 	static Booking[][] combinedRooms = new Booking[6][5];
 
-	static Booking[][] allRooms = { Room1, Room2, Room3 };
-
 	static Doctor[] allDoctors = new Doctor[30];
-	
-	static int numOfAssignedDocs = 0; 
-	
+
+	static int numOfAssignedDocs = 0;
+
 	static ArrayList<Doctor> assignedDocs = new ArrayList<Doctor>();
 
 	Scanner scan = new Scanner(System.in);
@@ -54,7 +43,7 @@ public class RoomScheduling {
 
 		System.out.println("Who are the doctors who needs a surgery room equipped with on-line streaming?");
 //		String[] doctorsWhoNeedsStreaming = in.nextLine().split(",");
-		String[] doctorsWhoNeedsStreaming = "rawanS1,rawanS2,rawanS11".split(",");
+		String[] doctorsWhoNeedsStreaming = "rawanj6,rawanS1,rawanS2,rawanS11".split(",");
 
 		in.close();
 
@@ -63,12 +52,11 @@ public class RoomScheduling {
 
 			allDoctors[i] = new Doctor(seniors[i], "senior", "normal");
 		}
-		
+
 		for (int i = 0; i < consultants.length; i++) {
 
 			allDoctors[i + (seniors.length)] = new Doctor(consultants[i], "consultant", "normal");
 		}
-
 
 		for (int i = 0; i < juniors.length; i++) {
 
@@ -115,10 +103,12 @@ public class RoomScheduling {
 
 			}
 		}
+		
+		
 
-		setTheRooms2();
+		setTheRooms();
 
-		if (solve(combinedRooms)) {
+		if (schedule(combinedRooms)) {
 			System.out.println("success");
 			printRoomsSchedule(1);
 			printRoomsSchedule(2);
@@ -128,70 +118,79 @@ public class RoomScheduling {
 
 	}
 
-	public static boolean solve(Booking[][] combinedRooms) {
-		return helper(0, 0);
+	public static boolean schedule(Booking[][] combinedRooms) {
+		return backtracking(0, 0);
 	}
 
-	public static boolean helper(int row, int col) {
-//		int i = 0 ; 
+	public static boolean backtracking(int row, int col) {
+
+		// Move to the next row if we reached the last column
 		if (col == 5) {
 			row += 1;
 			col = 0;
 		}
 
+		// Base Case
+		// If all doctors have been assigned, return true
 		if (numOfAssignedDocs == 30) {
 			return true;
 		}
-		if(row == 6) {
-			row = 0;  
+
+		// If we reached the last row and not all the doctors have been assigned
+		// return to the first row
+		if (row == 6) {
+			row = 0;
 		}
-			
+
+		// Assign Doctors
 		for (int i = 0; i < allDoctors.length; i++) {
-			
-			boolean assignedBefore = false; 
-			
-			if(allDoctors[i].assigned)
-				assignedBefore = true; 
-			
+
+			boolean assignedBefore = false;
+
+			if (allDoctors[i].assigned)
+				assignedBefore = true;
+
+			// Check if the assignment is valid
 			if (!Constraints.isValid(row, col, allDoctors[i])) {
+				// if not, move to the next doctor
 				continue;
 			}
-			
-			if(!assignedDocs.contains(allDoctors[i])) {
-				numOfAssignedDocs++; 
-				assignedDocs.add(allDoctors[i]); 
-			} else {
-				if(allDoctors[i].assigned)
-					numOfAssignedDocs--; 
+
+			// Check if the doctor has been assigned before
+			if (!assignedDocs.contains(allDoctors[i])) {
+				// if not, increase the number of assigned doctors
+				numOfAssignedDocs++;
+				// and add the doctor to the list of assigned doctors
+				assignedDocs.add(allDoctors[i]);
 			}
-			
+
+			// Assign doctor
 			allDoctors[i].assigned = true;
 			System.out.println("doctor assigned in room" + row);
 			combinedRooms[row][col].doctors.add(allDoctors[i]);
-			if(combinedRooms[row][col].surgeryType.equals("normal") && !combinedRooms[row][col].doctors.isEmpty()) {
-				combinedRooms[row][col].surgeryType = allDoctors[i].specialNeed; 
 
+			// only change the room type if it was normal
+			if (combinedRooms[row][col].surgeryType.equals("normal") && !combinedRooms[row][col].doctors.isEmpty()) {
+				combinedRooms[row][col].surgeryType = allDoctors[i].specialNeed;
 			}
-//			else 
-//				combinedRooms[row][col].surgeryType = allDoctors[i].specialNeed; 
-//			i++;
-			
-			if (helper(row, col + 1) == true) {
+
+			// Assign doctors to next column
+			if (backtracking(row, col + 1) == true) {
 				return true;
-				
+
 			} else {
-//				i--;
-//				numOfAssignedDocs--; 
+
+				// if we can successfully assign doctors, remove last assigned doctor
 				System.out.println("doctor removed from room" + row);
-//				allDoctors[i].assigned = false;
 				allDoctors[i].assigned = false;
-				if(!assignedBefore) {
-//					numOfAssignedDocs--;
+
+				if (!assignedBefore) {
 					assignedDocs.remove(allDoctors[i]);
 				}
+
 				combinedRooms[row][col].doctors.remove(allDoctors[i]);
-				if(combinedRooms[row][col].doctors.isEmpty()) {
-					combinedRooms[row][col].surgeryType = "normal"; 
+				if (combinedRooms[row][col].doctors.isEmpty()) {
+					combinedRooms[row][col].surgeryType = "normal";
 				}
 			}
 
@@ -199,27 +198,13 @@ public class RoomScheduling {
 		return false;
 	}
 
-	public static void printRoomSchedule(Booking[] room) {
-
-		System.out.printf("Room " + room[0].roomNum + " Schedule");
-
-		for (int i = 0; i < room.length; i++) {
-
-			System.out.println("day " + room[i].day);
-			System.out.println("Shift " + room[i].shift);
-			System.out.println("Surgery type " + room[i].surgeryType);
-
-			printDoctors(room[i].doctors);
-		}
-
-	}
 
 	public static void printRoomsSchedule(int roomNum) {
-		
+
 		System.out.printf("\n\n\n------------------------\n");
 		System.out.printf("Room " + roomNum + " Schedule");
 		System.out.printf("\n------------------------\n");
-		
+
 		for (int i = 0; i < combinedRooms.length; i++) {
 			for (int j = 0; j < combinedRooms[i].length; j++) {
 				if (combinedRooms[i][j].roomNum == roomNum) {
@@ -252,30 +237,6 @@ public class RoomScheduling {
 
 	public static boolean checkAssignmetOfDoctors() {
 
-		boolean isAllDoctorsAssigned = true;
-
-		for (int i = 0; i < allDoctors.length; i++) {
-
-			isAllDoctorsAssigned = isAllDoctorsAssigned && allDoctors[i].assigned;
-		}
-
-		return isAllDoctorsAssigned;
-
-	}
-
-	public static boolean checkAssignmetOfSeniorDoctors() {
-
-		for (int i = 0; i < allDoctors.length; i++) {
-			if (allDoctors[i].type.equals("senior") && (allDoctors[i].assigned == false))
-				return false;
-		}
-
-		return true;
-
-	}
-
-	public static boolean checkAssignmetOfDoctors2() {
-
 		for (int i = 0; i < allDoctors.length; i++) {
 			if (allDoctors[i].assigned == false)
 				return false;
@@ -286,43 +247,6 @@ public class RoomScheduling {
 	}
 
 	public static void setTheRooms() {
-		// Booking shift, day, room number
-		Room1[0] = new Booking(1, 1, 1);
-		Room1[1] = new Booking(2, 1, 1);
-		Room1[2] = new Booking(1, 2, 1);
-		Room1[3] = new Booking(2, 2, 1);
-		Room1[4] = new Booking(1, 3, 1);
-		Room1[5] = new Booking(2, 3, 1);
-		Room1[6] = new Booking(1, 4, 1);
-		Room1[7] = new Booking(2, 4, 1);
-		Room1[8] = new Booking(1, 5, 1);
-		Room1[9] = new Booking(2, 5, 1);
-
-		Room2[0] = new Booking(1, 1, 2);
-		Room2[1] = new Booking(2, 1, 2);
-		Room2[2] = new Booking(1, 2, 2);
-		Room2[3] = new Booking(2, 2, 2);
-		Room2[4] = new Booking(1, 3, 2);
-		Room2[5] = new Booking(2, 3, 2);
-		Room2[6] = new Booking(1, 4, 2);
-		Room2[7] = new Booking(2, 4, 2);
-		Room2[8] = new Booking(1, 5, 2);
-		Room2[9] = new Booking(2, 5, 2);
-
-		Room3[0] = new Booking(1, 1, 3);
-		Room3[1] = new Booking(2, 1, 3);
-		Room3[2] = new Booking(1, 2, 3);
-		Room3[3] = new Booking(2, 2, 3);
-		Room3[4] = new Booking(1, 3, 3);
-		Room3[5] = new Booking(2, 3, 3);
-		Room3[6] = new Booking(1, 4, 3);
-		Room3[7] = new Booking(2, 4, 3);
-		Room3[8] = new Booking(1, 5, 3);
-		Room3[9] = new Booking(2, 5, 3);
-
-	}
-
-	public static void setTheRooms2() {
 		// Booking shift, day, room number
 		combinedRooms[0][0] = new Booking(1, 1, 1);
 		combinedRooms[3][0] = new Booking(2, 1, 1);
