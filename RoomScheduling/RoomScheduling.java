@@ -21,30 +21,36 @@ public class RoomScheduling {
 		Scanner in = new Scanner(System.in);
 
 		System.out.println("Please enter the names of the consultants");
-//		String[] consultants = in.nextLine().split(",");
-		String[] consultants = "rawanC1,rawanC2,rawanC3,rawanC4,rawanC5,rawanC6".split(",");
-
+		String[] consultants = in.nextLine().split(",");
+//		String[] consultants = "doctorC1,doctorC2,doctorC3,doctorC4,doctorC5,doctorC6".split(",");
+		// doctorC1,doctorC2,doctorC3,doctorC4,doctorC5,doctorC6
+		
 		System.out.println("Please enter the names of the senior doctors");
-//		String[] seniors = in.nextLine().split(",");
-		String[] seniors = "rawanS1,rawanS2,rawanS3,rawanS4,rawanS5,rawanS6,rawanS7,rawanS8,rawanS9,rawanS10,rawanS11,rawanS12,rawanS13,rawanS14,rawanS15,rawanS16,rawanS17,rawanS18"
-				.split(",");
-
+		String[] seniors = in.nextLine().split(",");
+//		String[] seniors = "doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18"
+//				.split(",");
+		// doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18
+		
 		System.out.println("Please enter the names of junior doctors");
-//		String[] juniors = in.nextLine().split(",");
-		String[] juniors = "rawanj1,rawanj2,rawanj3,rawanj4,rawanj5,rawanj6".split(",");
+		String[] juniors = in.nextLine().split(",");
+//		String[] juniors = "doctorj1,doctorj2,doctorj3,doctorj4,doctorj5,doctorj6".split(",");
+		// doctorj1,doctorj2,doctorj3,doctorj4,doctorj5,doctorj6
 
 		System.out.println("Who are the doctors who will do the Brain Surgery?");
-//		String[] brainSurgeons = in.nextLine().split(",");
-		String[] brainSurgeons = "rawanS3,rawanS4,rawanS16".split(",");
+		String[] brainSurgeons = in.nextLine().split(",");
+//		String[] brainSurgeons = "doctorj6,doctorS3,doctorS4,doctorS16".split(",");
+		// doctorj6,doctorS3,doctorS4,doctorS16
 
 		System.out.println("Who are the doctors who needs a surgery room with an x-ray machine?");
-//		String[] doctorsWhoNeedsXRay = in.nextLine().split(",");
-		String[] doctorsWhoNeedsXRay = "rawanS7,rawanS9,rawanS14,rawanS17".split(",");
+		String[] doctorsWhoNeedsXRay = in.nextLine().split(",");
+//		String[] doctorsWhoNeedsXRay = "doctorS7,doctorS9,doctorS14,doctorS17".split(",");
+		// doctorS7,doctorS9,doctorS14,doctorS17
 
 		System.out.println("Who are the doctors who needs a surgery room equipped with on-line streaming?");
-//		String[] doctorsWhoNeedsStreaming = in.nextLine().split(",");
-		String[] doctorsWhoNeedsStreaming = "rawanj6,rawanS1,rawanS2,rawanS11".split(",");
-
+		String[] doctorsWhoNeedsStreaming = in.nextLine().split(",");
+//		String[] doctorsWhoNeedsStreaming = "doctorS1,doctorS2,doctorS11".split(",");
+		// doctorS1,doctorS2,doctorS11
+		
 		in.close();
 
 		// Filling the doctors array
@@ -63,10 +69,10 @@ public class RoomScheduling {
 			allDoctors[i + (seniors.length + consultants.length)] = new Doctor(juniors[i], "junior", "normal");
 		}
 
-		for (int i = 0; i < allDoctors.length; i++) {
-			System.out.println(allDoctors[i].name);
-
-		}
+//		for (int i = 0; i < allDoctors.length; i++) {
+//			System.out.println(allDoctors[i].name);
+//
+//		}
 
 		// Labeling doctors who need brain surgery
 		for (int i = 0; i < allDoctors.length; i++) {
@@ -109,7 +115,7 @@ public class RoomScheduling {
 		setTheRooms();
 
 		if (schedule(combinedRooms)) {
-			System.out.println("success");
+//			System.out.println("success");
 			printRoomsSchedule(1);
 			printRoomsSchedule(2);
 			printRoomsSchedule(3);
@@ -166,7 +172,7 @@ public class RoomScheduling {
 
 			// Assign doctor
 			allDoctors[i].assigned = true;
-			System.out.println("doctor assigned in room" + row);
+//			System.out.println("doctor assigned in room" + row);
 			combinedRooms[row][col].doctors.add(allDoctors[i]);
 
 			// only change the room type if it was normal
@@ -181,7 +187,7 @@ public class RoomScheduling {
 			} else {
 
 				// if we can successfully assign doctors, remove last assigned doctor
-				System.out.println("doctor removed from room" + row);
+//				System.out.println("doctor removed from room" + row);
 				allDoctors[i].assigned = false;
 
 				if (!assignedBefore) {
