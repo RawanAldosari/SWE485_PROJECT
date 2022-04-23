@@ -63,41 +63,43 @@ public class Constraints {
 	public static boolean isValid(int row, int col, Doctor doc) {
 
 		Booking currentBooking = RoomScheduling.combinedRooms[row][col];
+		boolean validPlace = true; 
 
-		if (!doc.specialNeed.equals("normal")) {
+		if (doc.type.equals("consultant")) {
+			validPlace = isValidC(row, col, doc, currentBooking);
+		}
+
+		if (doc.type.equals("senior")) {
+			validPlace =  isValidS(row, col, doc, currentBooking);
+		}
+		else
+			validPlace = isValidJ(row, col, doc, currentBooking);
+		
+		
+//		if (!doc.specialNeed.equals("normal")) {
 			// constraint 7
 			if (doc.specialNeed.equals("x-ray") && currentBooking.roomNum != 1) {
-				return false;
+				validPlace = validPlace && false; 
 			}
 			// constraint 6
 			if (doc.specialNeed.equals("brain")
-					&& (currentBooking.day != 1 || currentBooking.day != 3 || currentBooking.day != 5)) {
-				return false;
+					&& (currentBooking.day == 1 || currentBooking.day == 3 || currentBooking.day == 5)) {
+				validPlace = validPlace && false;  
 			}
 			// constraint 8
 			if (doc.specialNeed.equals("streaming") && currentBooking.roomNum != 2) {
-				return false;
+				validPlace = validPlace && false;  
 			}
-		}
+//		}
 
 		// constraint 2
 
 		for (int i = 0; i < 6; i++) {
 			if (RoomScheduling.combinedRooms[i][col].doctors.contains(doc))
-				return false;
-
+				return false; 
 		}
 
-		if (doc.type.equals("consultant")) {
-			return isValidC(row, col, doc, currentBooking);
-		}
-
-		if (doc.type.equals("senior")) {
-			return isValidS(row, col, doc, currentBooking);
-		}
-
-		else
-			return isValidJ(row, col, doc, currentBooking);
+		return validPlace; 
 
 	}
 
@@ -110,24 +112,25 @@ public class Constraints {
 		if (doc.assigned) {
 			return false;
 		}
-		if (!booking.doctors.isEmpty())
-			return false;
+		
+		if (booking.doctors.isEmpty())
+			return true;
 
-		return true;
+		return false;
 	}
 
 	public static boolean isValidS(int row, int col, Doctor doc, Booking booking) {
-		if (!booking.doctors.isEmpty())
-			return false;
+		if (booking.doctors.isEmpty())
+			return true;
 //		
 //		if(doc.assigned) {
-////			if (RoomScheduling.checkAssignmetOfSeniorDoctors())
-////				return true; 
-////			else
+//			if (RoomScheduling.numOfAssignedDocs >= 30)
+//				return true; 
+//			else
 //				return false; 
 //		}
 
-		return true;
+		return false;
 	}
 
 	public static boolean isValidJ(int row, int col, Doctor doc, Booking booking) {
@@ -142,9 +145,15 @@ public class Constraints {
 			return false;
 		}
 		// constraint 4 and 3
-		if (!booking.doctors.get(0).type.equals("senior")) {
-			return false;
+//		if (!booking.doctors.get(0).type.equals("senior")) {
+//			return false;
+//		}
+		for(int i = 0 ; i < booking.doctors.size() ; i++) {
+			if (!booking.doctors.get(i).type.equals("senior")) {
+				return false; 
+			}
 		}
+		
 		return true;
 	}
 

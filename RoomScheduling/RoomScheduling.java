@@ -21,6 +21,8 @@ public class RoomScheduling {
 	static Booking[][] allRooms = { Room1, Room2, Room3 };
 
 	static Doctor[] allDoctors = new Doctor[30];
+	
+	static int numOfAssignedDocs = 0; 
 
 	Scanner scan = new Scanner(System.in);
 
@@ -57,17 +59,17 @@ public class RoomScheduling {
 		// Filling the doctors array
 		for (int i = 0; i < consultants.length; i++) {
 
-			allDoctors[i] = new Doctor(consultants[i], "consultant", "none");
+			allDoctors[i] = new Doctor(consultants[i], "consultant", "normal");
 		}
 
 		for (int i = 0; i < seniors.length; i++) {
 
-			allDoctors[i + (consultants.length)] = new Doctor(seniors[i], "senior", "none");
+			allDoctors[i + (consultants.length)] = new Doctor(seniors[i], "senior", "normal");
 		}
 
 		for (int i = 0; i < juniors.length; i++) {
 
-			allDoctors[i + (seniors.length + consultants.length)] = new Doctor(juniors[i], "junior", "none");
+			allDoctors[i + (seniors.length + consultants.length)] = new Doctor(juniors[i], "junior", "normal");
 		}
 
 		for (int i = 0; i < allDoctors.length; i++) {
@@ -134,29 +136,41 @@ public class RoomScheduling {
 			col = 0;
 		}
 
-		if (row == 6)
+		if (numOfAssignedDocs == 30) {
 			return true;
-
+		}
+		if(row == 6) {
+			row = 0;  
+		}
+			
 		for (int i = 0; i < allDoctors.length; i++) {
-//		while(!checkAssignmetOfDoctors2()) {
 
+			
 			if (!Constraints.isValid(row, col, allDoctors[i])) {
-//				System.out.println("doctor amoved ob");
 				continue;
 			}
+			
+			if(!allDoctors[i].assigned) {
+				numOfAssignedDocs++; 
+			}
+			
 			allDoctors[i].assigned = true;
 			System.out.println("doctor assigned in room" + row);
 			combinedRooms[row][col].doctors.add(allDoctors[i]);
+			combinedRooms[row][col].surgeryType = allDoctors[i].specialNeed; 
 //			i++;
+			
 			if (helper(row, col + 1) == true) {
 				return true;
+				
 			} else {
 //				i--;
+//				numOfAssignedDocs--; 
 				System.out.println("doctor removed from room" + row);
 				allDoctors[i].assigned = false;
 				combinedRooms[row][col].doctors.remove(allDoctors[i]);
+				combinedRooms[row][col].surgeryType = "normal"; 
 			}
-//		}
 
 		}
 		return false;
