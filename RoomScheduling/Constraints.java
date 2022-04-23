@@ -66,13 +66,13 @@ public class Constraints {
 		boolean validPlace = true; 
 
 		if (doc.type.equals("senior")) {
-			validPlace =  isValidS(row, col, doc, currentBooking);
+			validPlace =  isValidS(doc, currentBooking);
 		}
 		else
-			validPlace = isValidJ(row, col, doc, currentBooking);
+			validPlace = isValidJ(doc, currentBooking);
 		
 		if (doc.type.equals("consultant")) {
-			validPlace = isValidC(row, col, doc, currentBooking);
+			validPlace = isValidC(doc, currentBooking);
 		}
 		
 		
@@ -105,7 +105,7 @@ public class Constraints {
 
 	}
 
-	public static boolean isValidC(int row, int col, Doctor doc, Booking booking) {
+	public static boolean isValidC(Doctor doc, Booking booking) {
 		
 		// constraint 1
 		if (booking.shift == 2) {
@@ -125,7 +125,7 @@ public class Constraints {
 		return true;
 	}
 
-	public static boolean isValidS(int row, int col, Doctor doc, Booking booking) {
+	public static boolean isValidS(Doctor doc, Booking booking) {
 		
 		boolean assign = true; 
 
@@ -140,7 +140,7 @@ public class Constraints {
 		return assign;
 	}
 
-	public static boolean isValidJ(int row, int col, Doctor doc, Booking booking) {
+	public static boolean isValidJ(Doctor doc, Booking booking) {
 		
 		// constraint 5
 		if (booking.roomNum == 3) {
