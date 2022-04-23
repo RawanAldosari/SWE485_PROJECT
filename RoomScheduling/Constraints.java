@@ -127,11 +127,11 @@ public class Constraints {
 
 	public static boolean isValidS(int row, int col, Doctor doc, Booking booking) {
 		
-		boolean assign = false; 
+		boolean assign = true; 
 //		
 		if(doc.assigned) {
-			if (RoomScheduling.numOfAssignedDocs >= 30)
-				assign = true; 
+			if (RoomScheduling.numOfAssignedDocs < 30)
+				assign = false; 
 		}
 		
 		if (booking.doctors.isEmpty())
