@@ -22,33 +22,38 @@ public class RoomScheduling {
 		System.out.println("Please enter the names of the consultants");
 //		String[] consultants = in.nextLine().split(",");
 		String[] consultants = "doctorC1,doctorC2,doctorC3,doctorC4,doctorC5,doctorC6".split(",");
-//		 doctorC1,doctorC2,doctorC3,doctorC4,doctorC5,doctorC6
+		// sample input: 
+		//doctorC1,doctorC2,doctorC3,doctorC4,doctorC5,doctorC6
 		
 		System.out.println("Please enter the names of the senior doctors");
 //		String[] seniors = in.nextLine().split(",");
-		String[] seniors = "doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18"
-				.split(",");
-//		 doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18
+		String[] seniors = "doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18".split(",");
+		// sample input: 
+		//doctorS1,doctorS2,doctorS3,doctorS4,doctorS5,doctorS6,doctorS7,doctorS8,doctorS9,doctorS10,doctorS11,doctorS12,doctorS13,doctorS14,doctorS15,doctorS16,doctorS17,doctorS18
 		
 		System.out.println("Please enter the names of junior doctors");
 //		String[] juniors = in.nextLine().split(",");
 		String[] juniors = "doctorj1,doctorj2,doctorj3,doctorj4,doctorj5,doctorj6".split(",");
-//		 doctorj1,doctorj2,doctorj3,doctorj4,doctorj5,doctorj6
+		// sample input: 
+		//doctorj1,doctorj2,doctorj3,doctorj4,doctorj5,doctorj6
 
 		System.out.println("Who are the doctors who will do the Brain Surgery?");
 //		String[] brainSurgeons = in.nextLine().split(",");
 		String[] brainSurgeons = "doctorj6,doctorS3,doctorS4,doctorS16".split(",");
-//		 doctorj6,doctorS3,doctorS4,doctorS16
+		// sample input: 
+		//doctorC4,doctorj6,doctorS3,doctorS4,doctorS16
 
 		System.out.println("Who are the doctors who needs a surgery room with an x-ray machine?");
 //		String[] doctorsWhoNeedsXRay = in.nextLine().split(",");
 		String[] doctorsWhoNeedsXRay = "doctorj2,doctorS7,doctorS9,doctorS14,doctorS17".split(",");
-//		 doctorj2,doctorS7,doctorS9,doctorS14,doctorS17
+		// sample input: 
+		//doctorj2,doctorS7,doctorS9,doctorS14,doctorS17
 
 		System.out.println("Who are the doctors who needs a surgery room equipped with on-line streaming?");
 //		String[] doctorsWhoNeedsStreaming = in.nextLine().split(",");
 		String[] doctorsWhoNeedsStreaming = "doctorC2,doctorS1,doctorS2,doctorS11".split(",");
-		// doctorC2,doctorS1,doctorS2,doctorS11
+		// sample input: 
+		// doctorC2,doctorj3,doctorS1,doctorS2,doctorS11
 		
 		in.close();
 
@@ -181,10 +186,10 @@ public class RoomScheduling {
 
 			} else {
 
-				// if we can successfully assign doctors, remove last assigned doctor
-				allDoctors[i].assigned = false;
+				// if we cannot successfully assign doctors, remove last assigned doctor
 
 				if (!assignedBefore) {
+					allDoctors[i].assigned = false;
 					numOfAssignedDocs--;
 					assignedDocs.remove(allDoctors[i]);
 				}
